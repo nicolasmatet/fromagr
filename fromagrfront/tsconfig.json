@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "jsx": "react",
+      "lib": ["es6", "dom", "dom.iterable"],
+      "sourceMap": true,
+      "module": "es2020",
+      "target": "es5",  
+      "allowJs": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "strictNullChecks": true,
+      "moduleResolution": "node"
+    },
+    "include": [
+        "src",
+        "custom.d.ts"
+      ]
+  }
