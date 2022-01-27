@@ -1,15 +1,20 @@
 import * as React from 'react';
-import {ListItem, ListItemText, ListItemIcon, SvgIcon } from '@mui/material';
+import { ListItem, ListItemText, ListItemIcon, Link } from '@mui/material';
 import { Fromage } from '../interfaces/Fromage';
-import  { ReactComponent as CheeseIcon } from '../../public/noun-cheese.svg';
+import { getIcon } from './Icons';
+import { useNavigate } from 'react-router-dom';
 
-export function LandingResult(props:{fromage:Fromage}){
+export function LandingResult(props: { fromage: Fromage }) {
+    const { fromage } = props;
+    const navigate = useNavigate();
+    const doPairing = () => navigate(`/pairing?nodeLabel=${fromage.labels[0]}&id=${fromage.identity.low}`, { replace: true });
+
     return (
-        <ListItem button>
+        <ListItem onClick={doPairing}>
             <ListItemIcon>
-                <SvgIcon component={CheeseIcon} viewBox="0 0 590 580" ></SvgIcon>
+                {React.createElement(getIcon(fromage))}
             </ListItemIcon>
-            <ListItemText primary={props.fromage.properties.name} />
+            <ListItemText primary={fromage.properties.name} />
         </ListItem>
     )
 }

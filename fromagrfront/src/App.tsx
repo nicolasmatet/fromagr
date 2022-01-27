@@ -7,15 +7,16 @@ import { Box, IconButton, PaletteMode } from '@mui/material';
 import { green, purple, grey } from '@mui/material/colors';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { PairingPage } from './components/PairingPage';
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
     primary: {
-      ...green,
-      ...(mode === 'dark' && {
-        main: green[300],
-      }),
+      ...(mode === 'light' ? green : purple)
+    },
+    secondary: {
+      ...(mode === 'light' ? green : grey)
     },
     background: {
       ...(mode === 'light'
@@ -32,12 +33,12 @@ const getDesignTokens = (mode: PaletteMode) => ({
     text: {
       ...(mode === 'light'
         ? {
-          primary: green[900],
+          primary: green[50],
           secondary: green[800],
         }
         : {
           primary: '#fff',
-          secondary: grey[500],
+          secondary: grey[100],
         }),
     },
   },
@@ -50,15 +51,38 @@ function App() {
   const colorMode = React.useContext(ColorModeContext);
 
   return (
-    <Box sx={{bgcolor:'background.default'}} className="App" >
-      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-      </IconButton>
+    <Box sx={{
+      bgcolor: 'background.default',
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100%'
+    }}>
 
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-      </Routes>
+      <Box sx={{
+        bgcolor: 'background.default',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'end',
+        flexGrow: 0
+      }}>
+        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon color="secondary" /> : <Brightness4Icon color="primary" />}
+        </IconButton>
+      </Box>
+
+      <Box sx={{
+        bgcolor: 'background.default',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1
+      }}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/pairing" element={<PairingPage />} />
+        </Routes>
+      </Box>
     </Box>
+
   );
 }
 
@@ -76,10 +100,12 @@ export default function ToggleColorMode() {
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <div className="App">
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </div>
   );
 }

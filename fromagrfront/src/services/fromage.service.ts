@@ -1,7 +1,7 @@
-import { Fromage } from "../interfaces/Fromage";
+import { Fromage, VinOuFromage } from "../interfaces/Fromage";
 import { Subject } from 'rxjs';
-import { searchCheeseByName } from "./api";
-const RxOp = require('rxjs/operators');
+import { searchCheeseByName, getWinesForCheese, getCheeseFromWine } from "./api";
+import { debounceTime } from 'rxjs/operators';
 
 export class FromageService {
 
@@ -9,13 +9,12 @@ export class FromageService {
     private searchStrings: Subject<string> = new Subject<string>();
 
     constructor() {
-        this.searchStrings.pipe(RxOp.debounceTime(500)).subscribe(async (fromageName) => {
-            // @ts-ignore
+        this.searchStrings.pipe(debounceTime(500)).subscribe(async (fromageName) => {
             const results = await searchCheeseByName(fromageName);
             this.searchResults.next(results);
         })
     }
-    subscribeTosearchResults(callback: any) {
+    subscribeToSearchResults(callback: any) {
         return this.searchResults.subscribe((fromages) => {
             callback(fromages)
         })
@@ -24,4 +23,29 @@ export class FromageService {
     searchByName(fromageName: string) {
         this.searchStrings.next(fromageName)
     }
+
+    static async awaitPairings(sourceLabel: string | null, sourceId: string | null, callback: any) {
+        const pairings = await FromageService.getPairings(sourceLabel, sourceId)
+        console.log("pairings", pairings);
+
+        callback(pairings)
+    }
+
+    private static async getPairings(sourceLabel: string | null, sourceId: string | null) {
+        if (!sourceId || !sourceLabel) {
+            return []
+        }
+        try {
+            let sourceIdInt = parseInt(sourceId);
+            const nodeLabel = sourceLabel.toLowerCase();
+            if (nodeLabel === "fromage") {
+                return (await getWinesForCheese(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
+            } else if (nodeLabel === "vin") {
+                return (await getCheeseFromWine(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
+            }
+        } catch {
+            return []
+        }
+    }
+
 }
