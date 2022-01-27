@@ -39,11 +39,6 @@ module.exports = {
         publicPath: '/',
     },
     plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
-        // }),
-        // Enables Hot Modules Replacement
-        // new webpack.HotModuleReplacementPlugin(),
         new HtmlWebPackPlugin({
             template: path.resolve(__dirname, 'public/index.html'),
             filename: 'index.html'
