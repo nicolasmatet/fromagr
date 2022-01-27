@@ -1,60 +1,55 @@
 const path = require('path')
-const HtmlWebPackPlugin = require( 'html-webpack-plugin' );
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-
 
 module.exports = {
     entry: path.resolve(__dirname, 'src', 'index.tsx'),
     devtool: 'inline-source-map',
     module: {
         rules: [
-          {
-            test: /\.tsx?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/,
-          },
-          {
-            test: /\.css$/,
-            use: [
-              'style-loader',
-              'css-loader'
-            ]
-          },
-          {
-            test: /\.svg$/,
-            use: [
-              {
-                loader: 'svg-url-loader',
-                options: {
-                  limit: 10000,
-                },
-              },
-            ],
-          },
-          {
-            test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
-            exclude: /node_modules/,
-            use: ['file-loader?name=[name].[ext]']
-          }
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack', 'url-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+                exclude: /node_modules/,
+                use: ['file-loader?name=[name].[ext]']
+            }
         ],
-      },
-      resolve: {
+    },
+    resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-      },    
+    },
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.js',
-      publicPath: '/',
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/',
     },
     plugins: [
-            // Enables Hot Modules Replacement
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.DefinePlugin({
+        //     'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
+        // }),
+        // Enables Hot Modules Replacement
+        // new webpack.HotModuleReplacementPlugin(),
         new HtmlWebPackPlugin({
-           template: path.resolve( __dirname, 'public/index.html' ),
-           filename: 'index.html'
+            template: path.resolve(__dirname, 'public/index.html'),
+            filename: 'index.html'
         })
-     ],
-     devServer: {
+    ],
+    devServer: {
         historyApiFallback: true
-     },
-  }
+    },
+}

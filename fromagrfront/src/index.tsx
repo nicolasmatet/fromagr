@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
 import '../public/favicon.ico';
 import '../public/manifest.json';
 import '../public/logo192.png';
+import ToggleColorMode from './App';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App/>
+    <ToggleColorMode/>
   </BrowserRouter>,
 document.getElementById('root')
 );
