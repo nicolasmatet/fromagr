@@ -4,6 +4,6 @@ module.exports = {
     PORT: process.env.PORT || 9000,
     DB_USER: process.env.DB_USER || 'neo4j',
     DB_PASSWD: process.env.DB_PASSWD || 'radKOALA',
-    DB_URI: process.env.DB_PASSWD || "neo4j://localhost:7687",
-    DB_NAME: process.env.DB_PASSWD || 'fromagerie'
+    DB_URI: process.env.DB_URI || "neo4j://localhost:7687",
+    DB_NAME: process.env.DB_NAME || 'fromagerie'
   }
