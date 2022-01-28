@@ -8,6 +8,7 @@ import { teal, purple, grey } from '@mui/material/colors';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { PairingPage } from './components/PairingPage';
+import { RootPage } from './components/RootPage';
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -34,7 +35,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
       ...(mode === 'light'
         ? {
           primary: teal[900],
-          secondary: purple[900],
+          secondary: '#fff',
         }
         : {
           primary: '#fff',
@@ -75,7 +76,8 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<RootPage />} />
+        <Route path="/search" element={<LandingPage />} />
         <Route path="/pairing" element={<PairingPage />} />
       </Routes>
     </Box>

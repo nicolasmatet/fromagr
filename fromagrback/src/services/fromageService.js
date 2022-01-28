@@ -26,7 +26,7 @@ function pairing(cheeseId) {
     OPTIONAL MATCH (c:${Fromage.label})-[:CATEGORIE]->(f)
     OPTIONAL MATCH (v:${Vin.label})-[:AVEC]->(f)
     OPTIONAL MATCH (v2:${Vin.label})-[:AVEC]->(c)
-    WITH collect(v)+collect(v2) as li
+    WITH collect(f)+collect(v)+collect(v2) as li
     UNWIND li as vs
     RETURN DISTINCT vs`;    
     return connector.execute(req, { id: cheeseId })

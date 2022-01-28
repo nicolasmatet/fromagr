@@ -4,11 +4,12 @@ import TextField from '@mui/material/TextField';
 import { FromageService } from '../services/fromage.service';
 import { Fromage } from '../interfaces/Fromage';
 import { LandingResultList } from './LandingResultList';
+import { useNavigate } from 'react-router-dom';
 
 const fromageService = new FromageService()
 
 export function LandingPage() {
-
+    const navigate = useNavigate();
     const initialFromage: string = '';
     const initialFromageList: Fromage[] | null = null;
     const [fromageList, setFromageList] = React.useState(initialFromageList);
