@@ -26,8 +26,6 @@ export class FromageService {
 
     static async awaitPairings(sourceLabel: string | null, sourceId: string | null, callback: any) {
         const pairings = await FromageService.getPairings(sourceLabel, sourceId)
-        console.log("pairings", pairings);
-
         callback(pairings)
     }
 

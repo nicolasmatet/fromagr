@@ -1,10 +1,10 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: path.resolve(__dirname, 'src', 'index.tsx'),
-    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -42,7 +42,12 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: path.resolve(__dirname, 'public/index.html'),
             filename: 'index.html'
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+              { from: "public/manifest.json", to: "" },
+            ],
+          })
     ],
     devServer: {
         historyApiFallback: true

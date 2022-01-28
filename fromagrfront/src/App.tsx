@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
 import { Box, IconButton, PaletteMode } from '@mui/material';
-import { green, purple, grey } from '@mui/material/colors';
+import { teal, purple, grey } from '@mui/material/colors';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { PairingPage } from './components/PairingPage';
@@ -13,16 +13,16 @@ const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
     primary: {
-      ...(mode === 'light' ? green : purple)
+      ...(mode === 'light' ? teal : purple)
     },
     secondary: {
-      ...(mode === 'light' ? green : grey)
+      ...(mode === 'light' ? purple : grey)
     },
     background: {
       ...(mode === 'light'
         ? {
           default: purple[400],
-          paper: green[50],
+          paper: teal[50],
         }
         : {
           default: grey[900],
@@ -33,8 +33,8 @@ const getDesignTokens = (mode: PaletteMode) => ({
     text: {
       ...(mode === 'light'
         ? {
-          primary: green[50],
-          secondary: green[800],
+          primary: teal[900],
+          secondary: purple[900],
         }
         : {
           primary: '#fff',

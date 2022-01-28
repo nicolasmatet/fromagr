@@ -20,7 +20,6 @@ const iconMap: { [key: string]: any } = {
 export function getIcon(graphNode: GraphNode<any>): () => JSX.Element {
     if (graphNode.labels.includes('Fromage')) {
         const key: string = graphNode.properties?.lait;
-        console.log("graphNode", graphNode, iconMap[key])
         return iconMap[key] ? iconMap[key] : CheeseIcon
     }
     if (graphNode.labels.includes('Vin')) {

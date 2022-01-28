@@ -1,7 +1,5 @@
 const neo4j = require('neo4j-driver');
 const config = require('../../config.js');
-console.log("config.DB_URI", config.DB_URI);
-console.log("config.DB_USER", config.DB_USER);
 
 const driver = neo4j.driver(config.DB_URI, neo4j.auth.basic(config.DB_USER, config.DB_PASSWD))
 const RxOp = require('rxjs/operators');
@@ -23,6 +21,7 @@ class Neo4jConnector{
     execute(request, params){
         const rxSession = driver.rxSession({ defaultAccessMode: neo4j.session.READ, database:config.DB_NAME })
         return rxSession.run( request, params )
+
         .records()
         .pipe(    
           RxOp.concatWith(rxSession.close())
