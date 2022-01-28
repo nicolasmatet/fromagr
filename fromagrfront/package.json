@@ -33,8 +33,6 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --mode=development",
-    "prod": "webpack --mode=production",
-    "start": "react-scripts start",
     "build": "npx webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

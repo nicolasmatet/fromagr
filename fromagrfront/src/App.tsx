@@ -55,7 +55,10 @@ function App() {
       bgcolor: 'background.default',
       display: 'flex',
       flexDirection: 'column',
-      minHeight: '100%'
+      minHeight: '100%',
+      maxHeight: '100%',
+      height: '100%',
+      overflow:'hidden'
     }}>
 
       <Box sx={{
@@ -70,17 +73,11 @@ function App() {
         </IconButton>
       </Box>
 
-      <Box sx={{
-        bgcolor: 'background.default',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1
-      }}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/pairing" element={<PairingPage />} />
-        </Routes>
-      </Box>
+
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/pairing" element={<PairingPage />} />
+      </Routes>
     </Box>
 
   );
