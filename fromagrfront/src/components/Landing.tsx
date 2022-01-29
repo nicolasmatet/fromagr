@@ -30,7 +30,7 @@ export function LandingPage() {
     return (
         <Box
             sx={{
-                '& > :not(style)': { m: 2, width: '28ch', borderRadius: 2 },
+                '& > :not(style)': { m: 2, width: '28ch' },
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',

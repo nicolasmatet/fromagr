@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export function RootPage(){
     const navigate = useNavigate();
-    React.useEffect(()=>navigate('/search'), [])
+    React.useEffect(()=>navigate('/f/search'), [])
 
     return (<></>)
 }

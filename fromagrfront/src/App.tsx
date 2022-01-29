@@ -4,17 +4,19 @@ import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
 import { Box, IconButton, PaletteMode } from '@mui/material';
-import { teal, purple, grey } from '@mui/material/colors';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { PairingPage } from './components/PairingPage';
 import { RootPage } from './components/RootPage';
+import {green} from './components/colors/green';
+import {purple} from './components/colors/purple';
+import { grey } from '@mui/material/colors';
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
     primary: {
-      ...(mode === 'light' ? teal : purple)
+      ...(mode === 'light' ? green : purple)
     },
     secondary: {
       ...(mode === 'light' ? purple : grey)
@@ -22,23 +24,23 @@ const getDesignTokens = (mode: PaletteMode) => ({
     background: {
       ...(mode === 'light'
         ? {
-          default: purple[400],
-          paper: teal[50],
+          default: '#EEEEEE',
+          paper: '#FFFFFF',
         }
         : {
           default: grey[900],
-          paper: purple[900],
+          paper: purple.dark
         }
       )
     },
     text: {
       ...(mode === 'light'
         ? {
-          primary: teal[900],
-          secondary: '#fff',
+          primary: '#000000',
+          secondary: purple.main,
         }
         : {
-          primary: '#fff',
+          primary: '#ffffff',
           secondary: grey[100],
         }),
     },
@@ -59,26 +61,26 @@ function App() {
       minHeight: '100%',
       maxHeight: '100%',
       height: '100%',
-      overflow:'hidden'
     }}>
 
       <Box sx={{
+        m: 2,
         bgcolor: 'background.default',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'end',
         flexGrow: 0
       }}>
-        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-          {theme.palette.mode === 'dark' ? <Brightness7Icon color="secondary" /> : <Brightness4Icon color="primary" />}
+        <IconButton  onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon color="primary" /> : <Brightness4Icon color="primary" />}
         </IconButton>
       </Box>
 
 
       <Routes>
         <Route path="/" element={<RootPage />} />
-        <Route path="/search" element={<LandingPage />} />
-        <Route path="/pairing" element={<PairingPage />} />
+        <Route path="/f/search" element={<LandingPage />} />
+        <Route path="/f/pairing" element={<PairingPage />} />
       </Routes>
     </Box>
 

@@ -33,17 +33,21 @@ console.log("servigin all to ", path.join(__dirname, '../fromagrfront/dist/index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../fromagrfront/dist/index.html'))
 })
+app.get('/f/:url', (req, res) => {
+  res.sendFile(path.join(__dirname, '../fromagrfront/dist/index.html'))
+})
+
 app.get('/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../fromagrfront/dist/' + req.params.url))
+  res.sendFile(path.join(__dirname, '../fromagrfront/dist/f/' + req.params.url))
 })
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

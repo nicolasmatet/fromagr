@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export function LandingResult(props: { fromage: Fromage }) {
     const { fromage } = props;
     const navigate = useNavigate();
-    const doPairing = () => navigate(`/pairing?nodeLabel=${fromage.labels[0]}&id=${fromage.identity.low}`, { replace: true });
+    const doPairing = () => navigate(`/f/pairing?nodeLabel=${fromage.labels[0]}&id=${fromage.identity.low}`, { replace: true });
 
     return (
         <ListItem onClick={doPairing}>

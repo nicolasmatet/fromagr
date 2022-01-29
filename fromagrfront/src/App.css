@@ -5,9 +5,3 @@
   width: 100%;
   overflow-x: hidden;
 }
-
-#outlined-basic-label.Mui-focused {
-  transform: translate(0, -18px);
-  font-size: smaller;
-}
-
