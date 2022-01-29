@@ -96,9 +96,9 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<RootPage />} />
         <Route path="/f/search" element={<LandingPage />} />
         <Route path="/f/pairing" element={<PairingPage />} />
+        <Route path="/*" element={<RootPage />} />
       </Routes>
     </Stack>
 

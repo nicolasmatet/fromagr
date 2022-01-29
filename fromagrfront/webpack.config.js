@@ -12,7 +12,7 @@ module.exports = {
         ConfigData: JSON.stringify(config)
     },
     entry: path.resolve(__dirname, 'src', 'index.tsx'),
-    devtool: "eval",
+    devtool: "source-map",
     module: {
         rules: [
             {

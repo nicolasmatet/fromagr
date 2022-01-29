@@ -33,12 +33,12 @@ console.log("servigin all to ", path.join(__dirname, '../fromagrfront/dist/index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../fromagrfront/dist/index.html'))
 })
-app.get('/f/:url', (req, res) => {
+app.get('/f/(:url)?', (req, res) => {
   res.sendFile(path.join(__dirname, '../fromagrfront/dist/index.html'))
 })
 
 app.get('/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../fromagrfront/dist/f/' + req.params.url))
+  res.sendFile(path.join(__dirname, '../fromagrfront/dist/' + req.params.url))
 })
 
 // catch 404 and forward to error handler
