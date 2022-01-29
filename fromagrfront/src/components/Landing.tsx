@@ -2,28 +2,31 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { FromageService } from '../services/fromage.service';
-import { Fromage } from '../interfaces/Fromage';
+import { VinOuFromage } from '../interfaces/Fromage';
 import { LandingResultList } from './LandingResultList';
 import { useNavigate } from 'react-router-dom';
 
 const fromageService = new FromageService()
 
 export function LandingPage() {
-    const navigate = useNavigate();
-    const initialFromage: string = '';
-    const initialFromageList: Fromage[] | null = null;
-    const [fromageList, setFromageList] = React.useState(initialFromageList);
+    const [fromageList, setFromageList] = React.useState<VinOuFromage[] | null>(null);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     React.useEffect(() => {
-        const subscription = fromageService.subscribeToSearchResults(setFromageList);
+        const subscription = fromageService.subscribeToSearchResults((res: VinOuFromage[]) => {
+            setFromageList(res);
+            setIsLoading(false);
+        });
         return () => subscription.unsubscribe();
     }, []);
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const fromageName = event.target.value;
         if (fromageName && fromageName.length > 1) {
+            setIsLoading(true);
             fromageService.searchByName(fromageName);
         } else {
+            setIsLoading(false);
             setFromageList(null)
         }
     }
@@ -37,8 +40,8 @@ export function LandingPage() {
                 alignItems: 'center'
             }}
         >
-            <TextField sx={{ bgcolor: 'background.paper' }} id="outlined-basic" label="Chercher un fromage" variant="outlined" onChange={onChange} />
-            <LandingResultList fromages={fromageList}></LandingResultList>
+            <TextField sx={{ bgcolor: 'background.paper' }} id="outlined-basic" label="Chercher un vin ou un fromage" variant="outlined" onChange={onChange} />
+            <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
         </Box>
     );
 

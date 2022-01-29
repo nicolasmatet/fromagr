@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower:regular&subset=latin,latin-ext');
+
 .App {
   text-align: center;
   position: absolute;
@@ -5,3 +7,5 @@
   width: 100%;
   overflow-x: hidden;
 }
+
+

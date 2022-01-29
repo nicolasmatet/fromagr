@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Stack } from '@mui/material';
 
 
 
@@ -32,7 +33,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export function PairingListItem(props: { IconComponent: any, title: string, properties?: any}) {
+export function PairingListItem(props: { IconComponent: any, title: string, properties?: any }) {
     const { IconComponent, title, properties } = props;
     const [expanded, setExpanded] = React.useState(false);
 
@@ -66,18 +67,27 @@ export function PairingListItem(props: { IconComponent: any, title: string, prop
             </CardActions> */}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    {Array.from(Object.keys(properties)).map((propKey) => {
-                        return (
-                            <div key={propKey}>
-                                <Typography paragraph>{propKey}</Typography>
-                                <Typography paragraph>
-                                    {properties[propKey]}
-                                </Typography>
-                            </div>
-                        )
-                    })}
+                    <Stack spacing={3}>
+                        {Array.from(Object.keys(properties)).map((propKey) => {
+                            return (
+                                <Stack key={propKey}>
+                                    <Typography variant='h5'>{propKey}</Typography>
+                                    <Typography paragraph>
+                                        {renderProperty(properties[propKey])}
+                                    </Typography>
+                                </Stack>
+                            )
+                        })}
+                    </Stack>
                 </CardContent>
             </Collapse>
         </Card>
     )
+}
+
+function renderProperty(prop:any){
+    if (prop instanceof Array){
+        return prop.join(', ')
+    }
+    return prop
 }

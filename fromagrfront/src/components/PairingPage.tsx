@@ -1,12 +1,12 @@
-import { Box, Skeleton, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { VinOuFromage } from "../interfaces/Fromage";
 import { FromageService } from "../services/fromage.service";
 import { PairingList } from "./PairingList";
-import { PairingParent } from "./PairingParent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import { TalkingCow } from "./TalkingCow";
+import SearchIcon from '@mui/icons-material/Search';
 const fromageService = new FromageService()
 
 export function PairingPage() {
@@ -20,12 +20,12 @@ export function PairingPage() {
         FromageService.awaitPairings(sourceLabel, sourceId, setPairingList);
     }, []);
 
-    const pairingListRender = renderPairingList(pairingList);
+    const pairingListRender = renderPairingList(pairingList, navigate);
     const pairingParentRender = renderPairingParent(pairingList)
     return (
 
         <>
-            <ArrowBackIcon sx={{ position: 'absolute', m: 3 }} onClick={() => navigate(-1)}></ArrowBackIcon>
+            <ArrowBackIcon color='primary' sx={{ position: 'absolute', m: 3 }} onClick={() => navigate(-1)}></ArrowBackIcon>
 
             <Stack spacing={1} sx={{
                 '& > :not(style)': { m: 1, width: '30ch' },
@@ -35,11 +35,6 @@ export function PairingPage() {
                 spacing: 1
             }}>
                 {pairingParentRender}
-
-                <Typography color="text.secondary">
-                    Recommandations:
-                </Typography>
-
                 {pairingListRender}
             </Stack>
         </>
@@ -53,12 +48,18 @@ function renderPairingParent(pairingList: VinOuFromage[] | null) {
     return <PairingList graphNodes={[pairingList[0]]} expecting={1}></PairingList>
 
 }
-function renderPairingList(pairingList: VinOuFromage[] | null) {
+function renderPairingList(pairingList: VinOuFromage[] | null, navigate:any) {
     if (!pairingList) {
         return <PairingList graphNodes={null} expecting={2}></PairingList>
     }
     if (pairingList.length < 2) {
-        return <>Meuh ! Pas de résultats...</>;
+        const action = <Stack direction="row" spacing={2} onClick={() => navigate(-1)}><SearchIcon></SearchIcon>Retour à la recherche</Stack>
+        return <TalkingCow message={"Pas de recomandations."} action={action}></TalkingCow>;
     }
-    return <PairingList graphNodes={pairingList.slice(1, pairingList.length)}></PairingList>;
+    return (<Stack>
+        <Typography color="text.secondary">
+            Recommandations:
+        </Typography>
+        <PairingList graphNodes={pairingList.slice(1, pairingList.length)}></PairingList>
+    </Stack>)
 }

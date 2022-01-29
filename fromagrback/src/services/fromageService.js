@@ -13,14 +13,14 @@ function getByName(cheeseName) {
 }
 
 function searchByName(cheeseName) {
-    const req = `MATCH (f:${Fromage.label}) WHERE f.${Fromage.name} CONTAINS $name RETURN f`;
+    const req = `MATCH (f) WHERE f.${Fromage.name} CONTAINS $name RETURN f`;
     return connector.execute(req, { name: cheeseName })
         .pipe(RxOp.map(cheese => {
             return cheese._fields[0];
         }))
 }
 
-function pairing(cheeseId) {
+function fromagePairing(cheeseId) {
     const req = `MATCH (f:${Fromage.label})
     WHERE id(f) = $id
     OPTIONAL MATCH (c:${Fromage.label})-[:CATEGORIE]->(f)
@@ -30,12 +30,23 @@ function pairing(cheeseId) {
     UNWIND li as vs
     RETURN DISTINCT vs`;    
     return connector.execute(req, { id: cheeseId })
-        .pipe(RxOp.map(cheese => {
-            console.log("cheese", cheese)
-            return cheese._fields;
+        .pipe(RxOp.map(wines => {
+            return wines._fields;
         }))
 }
 
+function vinPairing(vinId){
+    const req = `MATCH (v:${Vin.label})
+    WHERE id(v) = $id
+    OPTIONAL MATCH (v:${Vin.label})-[:AVEC]->(f)
+    WITH collect(v)+collect(f) as li
+    UNWIND li as vs
+    RETURN DISTINCT vs`;    
+    return connector.execute(req, { id: vinId })
+        .pipe(RxOp.map(cheese => {
+            return cheese._fields;
+        }))
+}
 
 function create(cheeseName) {
     const req = `CREATE (f:${Fromage.label}) SET f.${Fromage.name}=$name RETURN f`;
@@ -46,4 +57,5 @@ function create(cheeseName) {
 exports.searchByName = searchByName
 exports.getByName = getByName
 exports.create = create
-exports.pairing = pairing
+exports.fromagePairing = fromagePairing
+exports.vinPairing = vinPairing

@@ -3,14 +3,32 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
-import { Box, IconButton, PaletteMode } from '@mui/material';
+import { Box, IconButton, PaletteMode, Stack } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { PairingPage } from './components/PairingPage';
 import { RootPage } from './components/RootPage';
-import {green} from './components/colors/green';
-import {purple} from './components/colors/purple';
+import { green } from './components/colors/green';
+import { purple } from './components/colors/purple';
 import { grey } from '@mui/material/colors';
+
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    cow: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    cow?: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    cow: true;
+  }
+}
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -45,7 +63,11 @@ const getDesignTokens = (mode: PaletteMode) => ({
         }),
     },
   },
-});
+  typography: {
+    cow: {
+      fontFamily: 'Indie Flower',
+    },
+} });
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -54,13 +76,9 @@ function App() {
   const colorMode = React.useContext(ColorModeContext);
 
   return (
-    <Box sx={{
+    <Stack sx={{
       bgcolor: 'background.default',
-      display: 'flex',
-      flexDirection: 'column',
       minHeight: '100%',
-      maxHeight: '100%',
-      height: '100%',
     }}>
 
       <Box sx={{
@@ -71,7 +89,7 @@ function App() {
         justifyContent: 'end',
         flexGrow: 0
       }}>
-        <IconButton  onClick={colorMode.toggleColorMode} color="inherit">
+        <IconButton onClick={colorMode.toggleColorMode} color="inherit">
           {theme.palette.mode === 'dark' ? <Brightness7Icon color="primary" /> : <Brightness4Icon color="primary" />}
         </IconButton>
       </Box>
@@ -82,7 +100,7 @@ function App() {
         <Route path="/f/search" element={<LandingPage />} />
         <Route path="/f/pairing" element={<PairingPage />} />
       </Routes>
-    </Box>
+    </Stack>
 
   );
 }

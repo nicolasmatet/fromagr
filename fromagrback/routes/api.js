@@ -2,7 +2,7 @@ var express = require("express");
 var fromageService = require("../src/services/fromageService.js");
 var router = express.Router();
 
-function jsonResponse(res, subject){
+function jsonResponse(res, subject) {
     const result = []
     subject.subscribe({
         next: data => result.push(data),
@@ -11,26 +11,29 @@ function jsonResponse(res, subject){
     });
 }
 
-router.get("/", function(req, res, next) {
+router.get("/", function (req, res) {
     res.send("API is working");
 });
 
-router.get("/fromage/get", function(req, res, next) {
+router.get("/fromage/get", function (req, res) {
     const cheeseName = req.query.name.toLowerCase()
-    jsonResponse( res, fromageService.getByName(cheeseName) )
+    jsonResponse(res, fromageService.getByName(cheeseName))
 });
 
 
-router.get("/fromage/search", function(req, res, next) {
+router.get("/fromage/search", function (req, res) {
     const cheeseName = req.query.name.toLowerCase()
-    jsonResponse( res, fromageService.searchByName(cheeseName))
+    jsonResponse(res, fromageService.searchByName(cheeseName))
 });
 
-router.get("/fromage/pairing", function(req, res, next) {
+router.get("/fromage/pairing", function (req, res) {
     const cheeseId = parseInt(req.query.id)
-    jsonResponse( res, fromageService.pairing(cheeseId))
+    jsonResponse(res, fromageService.fromagePairing(cheeseId))
 });
 
-
+router.get("/vin/pairing", function (req, res) {
+    const vinId = parseInt(req.query.id)
+    jsonResponse(res, fromageService.vinPairing(vinId))
+});
 
 module.exports = router;
