@@ -31,12 +31,13 @@ export function LandingPage() {
         }
     }
 
-    function clearInput(){
+    function clearInput() {
         setSearchText('')
         setIsLoading(false);
         setFromageList(null)
     }
 
+    const iconClear = searchText ? (<IconButton style={{ position: 'absolute' }} color='primary' onClick={clearInput} > <CloseIcon></CloseIcon> </IconButton>) : <></>
     return (
         <Box
             sx={{
@@ -51,21 +52,11 @@ export function LandingPage() {
                 <TextField sx={{ bgcolor: 'background.paper' }} id="outlined-basic" label="Chercher un vin ou un fromage" variant="outlined"
                     onChange={onChange}
                     value={searchText} />
-                <IconButton style={{ position: 'absolute' }} color='primary' onClick={clearInput} >
-                    <CloseIcon></CloseIcon>
-                </IconButton>
+                {iconClear}
             </Stack>
 
-            <Box
-            sx={{
-                '& > :not(style)': { width: '28ch' },
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
+            <Box sx={{ '& > :not(style)': { width: '28ch' } }} >
+                <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
             </Box>
         </Box>
     );
