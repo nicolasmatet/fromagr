@@ -3,71 +3,21 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
-import { Box, IconButton, PaletteMode, Stack } from '@mui/material';
+import { Box, CssBaseline, IconButton, PaletteMode, Stack } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { PairingPage } from './components/PairingPage';
 import { RootPage } from './components/RootPage';
-import { green } from './components/colors/green';
-import { purple } from './components/colors/purple';
-import { grey } from '@mui/material/colors';
+import { light } from './components/themes/light';
+import { dark } from './components/themes/dark';
+import { typography } from './components/themes/typography';
 
-declare module '@mui/material/styles' {
-  interface TypographyVariants {
-    cow: React.CSSProperties;
-  }
 
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions {
-    cow?: React.CSSProperties;
-  }
-}
-
-// Update the Typography's variant prop options
-declare module '@mui/material/Typography' {
-  interface TypographyPropsVariantOverrides {
-    cow: true;
-  }
-}
 
 const getDesignTokens = (mode: PaletteMode) => ({
-  palette: {
-    mode,
-    primary: {
-      ...(mode === 'light' ? green : purple)
-    },
-    secondary: {
-      ...(mode === 'light' ? purple : grey)
-    },
-    background: {
-      ...(mode === 'light'
-        ? {
-          default: '#EEEEEE',
-          paper: '#FFFFFF',
-        }
-        : {
-          default: grey[900],
-          paper: purple.dark
-        }
-      )
-    },
-    text: {
-      ...(mode === 'light'
-        ? {
-          primary: '#000000',
-          secondary: purple.main,
-        }
-        : {
-          primary: '#ffffff',
-          secondary: grey[100],
-        }),
-    },
-  },
-  typography: {
-    cow: {
-      fontFamily: 'Indie Flower',
-    },
-} });
+  ...(mode === 'light' ? light : dark),
+  typography: typography
+});
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -122,6 +72,7 @@ export default function ToggleColorMode() {
     <div className="App">
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <App />
         </ThemeProvider>
       </ColorModeContext.Provider>

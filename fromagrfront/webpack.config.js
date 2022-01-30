@@ -49,7 +49,15 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
             template: path.resolve(__dirname, 'public/index.html'),
-            filename: 'index.html'
+            filename: 'index.html',
+            title: "Fromagr",
+            meta:{
+                description:"Un site pour choisir ses association de vins et fromages",
+                viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+                charset:'utf-8',
+            },
+            favicon: "./public/favicon/favicon.ico"
+
         }),
         new CopyPlugin({
             patterns: [

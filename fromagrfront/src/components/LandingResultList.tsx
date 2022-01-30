@@ -2,10 +2,8 @@ import * as React from 'react';
 import { VinOuFromage } from '../interfaces/Fromage';
 import { List, Box, useTheme, Skeleton } from '@mui/material';
 import { LandingResult } from './LandingResult';
-import Logo from '../../public/fromager-logo.png';
-import LogoDark from '../../public/fromager-logo-dark.png';
-import LogoNoResult from '../../public/fromager-logo-no-result.png';
 import { TalkingCow } from './TalkingCow';
+import { BackgroundDark, Background } from './Backgrounds';
 
 export function LandingResultList(props: { results: VinOuFromage[] | null, isLoading: boolean }) {
     const theme = useTheme();
@@ -24,18 +22,18 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
     if (!results) {
         return (
             <Box>
-                <img src={theme.palette.mode === 'dark' ? LogoDark : Logo} />
+                <img src={theme.palette.mode === 'dark' ? BackgroundDark : Background} />
             </Box>)
     }
 
     if (!results.length) {
         return (
-                <TalkingCow message={"Pas de résultats."}></TalkingCow>
-            );
+            <TalkingCow message={"Pas de résultats."}></TalkingCow>
+        );
     }
 
     return (
-        <List sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2 }} component="nav" aria-label="fromages">
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }} component="nav" aria-label="fromages">
             {results.map(res => <LandingResult key={res.identity.low} result={res}></LandingResult>)}
         </List>
 

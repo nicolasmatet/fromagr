@@ -1,10 +1,8 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import { FromageService } from '../services/fromage.service';
 import { VinOuFromage } from '../interfaces/Fromage';
+import { Box, TextField } from '@mui/material';
 import { LandingResultList } from './LandingResultList';
-import { useNavigate } from 'react-router-dom';
 
 const fromageService = new FromageService()
 
