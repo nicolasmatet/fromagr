@@ -3,11 +3,10 @@ import { FromageService } from '../services/fromage.service';
 import { VinOuFromage } from '../interfaces/Fromage';
 import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
 import { LandingResultList } from './LandingResultList';
-import CloseIcon from '@mui/icons-material/Close';
+import { TextFieldWithClear } from './TextFieldWithClear';
 const fromageService = new FromageService()
 
 export function LandingPage() {
-    const [searchText, setSearchText] = React.useState("")
     const [fromageList, setFromageList] = React.useState<VinOuFromage[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -21,7 +20,6 @@ export function LandingPage() {
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const fromageName = event.target.value;
-        setSearchText(fromageName)
         if (fromageName && fromageName.length > 1) {
             setIsLoading(true);
             fromageService.searchByName(fromageName);
@@ -31,13 +29,8 @@ export function LandingPage() {
         }
     }
 
-    function clearInput() {
-        setSearchText('')
-        setIsLoading(false);
-        setFromageList(null)
-    }
 
-    const iconClear = searchText ? (<IconButton style={{ position: 'absolute' }} color='primary' onClick={clearInput} > <CloseIcon></CloseIcon> </IconButton>) : <></>
+
     return (
         <Box
             sx={{
@@ -48,13 +41,7 @@ export function LandingPage() {
                 alignItems: 'center'
             }}
         >
-            <Stack direction="row" sx={{ alignItems: "center", justifyContent: 'end' }}>
-                <TextField sx={{ bgcolor: 'background.paper' }} id="outlined-basic" label="Chercher un vin ou un fromage" variant="outlined"
-                    onChange={onChange}
-                    value={searchText} />
-                {iconClear}
-            </Stack>
-
+            <TextFieldWithClear label="Chercher un vin ou un fromage" onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
             <Box sx={{ '& > :not(style)': { width: '28ch' } }} >
                 <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
             </Box>

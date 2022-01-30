@@ -57,7 +57,7 @@ function renderPairingList(pairingList: VinOuFromage[] | null, navigate:any) {
         return <TalkingCow message={"Pas de recomandations."} action={action}></TalkingCow>;
     }
     return (<Stack>
-        <Typography color="text.secondary">
+        <Typography color="primary">
             Recommandations:
         </Typography>
         <PairingList graphNodes={pairingList.slice(1, pairingList.length)}></PairingList>
