@@ -1,6 +1,6 @@
 import { Fromage, VinOuFromage } from "../interfaces/Fromage";
 import { Subject } from 'rxjs';
-import { searchCheeseByName, getWinesForCheese, getCheeseFromWine } from "./api";
+import { searchFromageByName, getVinsForFromage, getFromageForVin, getRelatedFromage } from "./api";
 import { debounceTime } from 'rxjs/operators';
 
 export class FromageService {
@@ -10,7 +10,7 @@ export class FromageService {
 
     constructor() {
         this.searchStrings.pipe(debounceTime(500)).subscribe(async (fromageName) => {
-            const results = await searchCheeseByName(fromageName);
+            const results = await searchFromageByName(fromageName);
             this.searchResults.next(results);
         })
     }
@@ -24,6 +24,10 @@ export class FromageService {
         this.searchStrings.next(fromageName)
     }
 
+    async awaitRelatedFromage(fromageId: number, callback: any) {
+        const related = (await getRelatedFromage(fromageId)).map((p: [Fromage]) => p[0])
+        callback(related)
+    }
     static async awaitPairings(sourceLabel: string | null, sourceId: string | null, callback: any) {
         const pairings = await FromageService.getPairings(sourceLabel, sourceId)
         callback(pairings)
@@ -37,9 +41,9 @@ export class FromageService {
             let sourceIdInt = parseInt(sourceId);
             const nodeLabel = sourceLabel.toLowerCase();
             if (nodeLabel === "fromage") {
-                return (await getWinesForCheese(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
+                return (await getVinsForFromage(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
             } else if (nodeLabel === "vin") {
-                return (await getCheeseFromWine(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
+                return (await getFromageForVin(sourceIdInt)).map((v: [VinOuFromage]) => v[0]);
             }
         } catch {
             return []

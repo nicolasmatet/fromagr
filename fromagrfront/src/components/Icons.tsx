@@ -10,6 +10,7 @@ import { ReactComponent as SheepImg } from '../../public/icons/noun-sheep.svg';
 import { ReactComponent as GoatImg } from '../../public/icons/noun-goat.svg';
 
 import { GraphNode } from "../interfaces/GraphNode";
+import { isFromage, isVin } from "../interfaces/Fromage";
 
 const iconMap: { [key: string]: any } = {
     vache: CowIcon,
@@ -20,12 +21,11 @@ const iconMap: { [key: string]: any } = {
 }
 
 export function getIcon(graphNode: GraphNode<any>): () => JSX.Element {
-    if (graphNode.labels.includes('Fromage')) {
+    if (isFromage(graphNode)) {
         const key: string = graphNode.properties?.lait;
         return iconMap[key] ? iconMap[key] : CheeseIcon
     }
-    if (graphNode.labels.includes('Vin')) {
-        console.log(graphNode);
+    if (isVin(graphNode)) {
         const key: string = graphNode.properties?.couleur;
         return iconMap[key] ? iconMap[key] : WineIcon
     }

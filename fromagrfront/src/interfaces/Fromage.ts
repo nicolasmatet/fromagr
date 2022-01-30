@@ -1,4 +1,14 @@
 import { GraphNode } from "./GraphNode";
-export type Fromage = GraphNode<{ name: string, lait: string }>
-export type Vin = GraphNode<{ name: string, couleur: string }>
+export interface VinProperties { name: string, couleur: string };
+export interface FromageProperties { name: string, lait: string };
+export type Fromage = GraphNode<FromageProperties>
+export type Vin = GraphNode<VinProperties>
 export type VinOuFromage = Fromage | Vin;
+
+export function isFromage(graphNode:VinOuFromage){
+    return graphNode.labels.includes('Fromage')
+}
+
+export function isVin(graphNode:VinOuFromage){
+    return graphNode.labels.includes('Vin')
+}

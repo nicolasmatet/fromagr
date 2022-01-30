@@ -10,14 +10,12 @@ export function PairingList(props: { graphNodes: GraphNode<any>[] | null, expect
     const { graphNodes, expecting } = props;
     let content;
     if (!graphNodes || graphNodes.length === 0) {
-        content = Array.from(Array(expecting ? expecting : 1)).map(() => <Skeleton variant="rectangular" height="64px"/>)
+        content = Array.from(Array(expecting ? expecting : 1)).map((_,i) => <Skeleton key={i} variant="rectangular" height="64px" />)
     } else {
         content = graphNodes.map(node =>
             <PairingListItem
                 key={node.identity.low}
-                IconComponent={getIcon(node)}
-                title={node.properties.name}
-                properties={node.properties}
+                graphNode={node}
             ></PairingListItem>)
     }
     return (

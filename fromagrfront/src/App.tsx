@@ -11,6 +11,7 @@ import { RootPage } from './components/RootPage';
 import { light } from './components/themes/light';
 import { dark } from './components/themes/dark';
 import { typography } from './components/themes/typography';
+import { urlPairing, urlSearch } from './components/urls';
 
 
 
@@ -46,8 +47,8 @@ function App() {
 
 
       <Routes>
-        <Route path="/f/search" element={<LandingPage />} />
-        <Route path="/f/pairing" element={<PairingPage />} />
+        <Route path={urlSearch()} element={<LandingPage />} />
+        <Route path={urlPairing()} element={<PairingPage />} />
         <Route path="/*" element={<RootPage />} />
       </Routes>
     </Stack>

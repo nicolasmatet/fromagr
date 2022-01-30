@@ -16,24 +16,29 @@ router.get("/", function (req, res) {
 });
 
 router.get("/fromage/get", function (req, res) {
-    const cheeseName = req.query.name.toLowerCase()
-    jsonResponse(res, fromageService.getByName(cheeseName))
+    const fromageName = req.query.name.toLowerCase()
+    jsonResponse(res, fromageService.getByName(fromageName))
 });
 
 
 router.get("/fromage/search", function (req, res) {
-    const cheeseName = req.query.name.toLowerCase()
-    jsonResponse(res, fromageService.searchByName(cheeseName))
+    const fromageId = req.query.name.toLowerCase()
+    jsonResponse(res, fromageService.searchByName(fromageId))
 });
 
 router.get("/fromage/pairing", function (req, res) {
-    const cheeseId = parseInt(req.query.id)
-    jsonResponse(res, fromageService.fromagePairing(cheeseId))
+    const fromageId = parseInt(req.query.id)
+    jsonResponse(res, fromageService.fromagePairing(fromageId))
 });
 
 router.get("/vin/pairing", function (req, res) {
     const vinId = parseInt(req.query.id)
     jsonResponse(res, fromageService.vinPairing(vinId))
+});
+
+router.get("/fromage/related", function (req, res) {
+    const vinId = parseInt(req.query.id)
+    jsonResponse(res, fromageService.relatedFromages(vinId))
 });
 
 module.exports = router;

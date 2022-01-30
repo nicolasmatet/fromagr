@@ -14,9 +14,89 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Stack } from '@mui/material';
+import { Box, Link, Skeleton, Stack } from '@mui/material';
+import { Fromage, FromageProperties, isFromage, isVin, Vin, VinOuFromage, VinProperties } from '../interfaces/Fromage';
+import { useNavigate } from 'react-router-dom';
+import { getIcon } from './Icons';
+import { GraphNode } from '../interfaces/GraphNode';
+import { urlPairing } from './urls';
+import { useEffect } from 'react';
+import { FromageService } from '../services/fromage.service';
 
 
+const fromageService = new FromageService()
+
+function renderString(prop: any) {
+    if (prop instanceof Array) {
+        return prop.join(', ')
+    }
+    return prop;
+}
+
+function RenderLink(props: { graphNode: GraphNode<any> }) {
+    const { graphNode } = props;
+    return <Link href={urlPairing(graphNode.labels[0], graphNode.identity.low)}>
+        <Stack direction="row" gap={1}>
+            {React.createElement(getIcon(graphNode))}
+            {graphNode.properties.name}
+        </Stack>
+    </Link>;
+}
+
+function linkPropertiesRender(linksGroups: [string, GraphNode<any>[]][]) {
+    return linksGroups.map(([title, graphNodes]) => {
+        if (!graphNodes || graphNodes.length === 0) {
+            return <></>
+        }
+        return (
+            <Stack spacing={1} key={title}>
+                <Typography variant='h5'>{title}</Typography>
+                <Stack spacing={1}>
+                    {graphNodes.map((link) => <RenderLink key={link.identity.low} graphNode={link} ></RenderLink>)}
+                </Stack>
+            </Stack>
+        )
+    });
+
+}
+function defaultPropertiesRender(propertiesGroups: [string, any][]) {
+    return propertiesGroups.map(([title, values]) => {
+        return (<Stack spacing={1} key={title}>
+            <Typography variant='h5'>{title}</Typography>
+            <Typography paragraph>
+                {renderString(values)}
+            </Typography>
+        </Stack>)
+    })
+}
+
+function VinPropertiesRender(props: { graphNode: Vin }) {
+    const { graphNode } = props;
+    const propertiesGroups = Array.from(Object.entries(graphNode.properties));
+    return (
+        <Stack spacing={3}>
+            {defaultPropertiesRender(propertiesGroups)}
+            {linkPropertiesRender([["En savoir plus", [graphNode]]])}
+        </Stack>)
+}
+
+function FromagePropertiesRender(props: { graphNode: Fromage }) {
+    const { graphNode } = props;
+    const [related, setRelated] = React.useState<Fromage[] | null>(null)
+    useEffect(() => {
+        fromageService.awaitRelatedFromage(graphNode.identity.low, setRelated)
+    }, [])
+    const relatedRender = related
+        ? linkPropertiesRender([["Voir aussi", related]])
+        : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
+    return (
+        <Stack spacing={3}>
+            {defaultPropertiesRender(Array.from(Object.entries(graphNode.properties)))}
+            {linkPropertiesRender([["En savoir plus", [graphNode]]])}
+            {relatedRender}
+        </Stack>
+    )
+}
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -33,14 +113,18 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export function PairingListItem(props: { IconComponent: any, title: string, properties?: any }) {
-    const { IconComponent, title, properties } = props;
+export function PairingListItem(props: { graphNode: VinOuFromage }) {
+    const { graphNode } = props;
     const [expanded, setExpanded] = React.useState(false);
-
+    const title = graphNode.properties.name;
+    const properties =
+        isFromage(graphNode) ? <FromagePropertiesRender graphNode={graphNode as Fromage}></FromagePropertiesRender>
+            : isVin(graphNode) ? <VinPropertiesRender graphNode={graphNode as Vin}></VinPropertiesRender>
+                : defaultPropertiesRender(Array.from(Object.entries(graphNode.properties)));
+    const IconComponent = getIcon(graphNode);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -59,35 +143,12 @@ export function PairingListItem(props: { IconComponent: any, title: string, prop
                 }
                 title={title}
             />
-            {/* <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-            </CardActions> */}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Stack spacing={3}>
-                        {Array.from(Object.keys(properties)).map((propKey) => {
-                            return (
-                                <Stack key={propKey}>
-                                    <Typography variant='h5'>{propKey}</Typography>
-                                    <Typography paragraph>
-                                        {renderProperty(properties[propKey])}
-                                    </Typography>
-                                </Stack>
-                            )
-                        })}
-                    </Stack>
+                    {properties}
                 </CardContent>
             </Collapse>
         </Card>
     )
 }
 
-function renderProperty(prop:any){
-    if (prop instanceof Array){
-        return prop.join(', ')
-    }
-    return prop
-}
