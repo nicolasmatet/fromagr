@@ -35,15 +35,17 @@ export function LandingPage() {
     return (
         <Box
             sx={{
-                '& > :not(style)': { m: 2 },
+                '& > :not(style)': {
+                    m: 2
+                },
                 display: 'flex',
-                mt:3,
+                mt: 3,
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             }}
         >
-            <TextFieldWithClear label="Chercher un vin ou un fromage" onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
+            <TextFieldWithClear label="Vin ou fromage..." onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
             <Box sx={{ '& > :not(style)': { width: '28ch' } }} >
                 <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
             </Box>

@@ -2,18 +2,18 @@ import * as React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
-import { ThemeProvider, useTheme, createTheme, styled } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, IconButton, PaletteMode, Slide, Stack, Toolbar, useScrollTrigger } from '@mui/material';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { CssBaseline, PaletteMode, Stack } from '@mui/material';
 import { PairingPage } from './components/PairingPage';
 import { RootPage } from './components/RootPage';
 import { light } from './components/themes/light';
 import { dark } from './components/themes/dark';
 import { typography } from './components/themes/typography';
-import { urlPairing, urlSearch } from './components/urls';
+import { urlFavorites, urlPairing, urlSearch, urlSuggestions } from './components/urls';
 import { TopBar } from './components/TopBar';
 import { BottomBar } from './components/BottomBar';
+import { Favorites } from './components/Favorites';
+import { Suggestions } from './components/Suggestions';
 
 
 
@@ -23,23 +23,59 @@ const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const getDesignTokens = (mode: PaletteMode) => ({
   ...(mode === 'light' ? light : dark),
-  typography: typography
+  typography: typography,
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      // most basic recommended timing
+      standard: 300,
+      // this is to be used in complex animations
+      complex: 375,
+      // recommended when something is entering screen
+      enteringScreen: 225,
+      // recommended when something is leaving screen
+      leavingScreen: 195,
+      longest: 1000
+    },
+    easing: {
+      // This is the most common easing curve.
+      easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      // Objects enter the screen at full velocity from off-screen and
+      // slowly decelerate to a resting point.
+      easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
+      // Objects leave the screen at full velocity. They do not decelerate when off-screen.
+      easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+      // The sharp curve is used by objects that may return to the screen at any time.
+      sharp: 'cubic-bezier(0.4, 0, 0.6, 1)',
+    },
+  }
 });
 
 
 function App() {
   return (
     <Routes>
-      <Route path={urlSearch()} element={
-        <>
-          <TopBar />
-          <LandingPage />
-        </>
+      <Route path={urlSearch()} element={<>
+        <TopBar />
+        <LandingPage />
+      </>
       } />
       <Route path={urlPairing()} element={<>
         <TopBar goBack={true} />
         <PairingPage />
       </>} />
+      <Route path={urlFavorites()} element={<>
+        <TopBar />
+        <Favorites />
+      </>
+      } />
+      <Route path={urlSuggestions()} element={<>
+        <TopBar />
+        <Suggestions />
+      </>
+      } />
       <Route path="/*" element={<RootPage />} />
     </Routes>
   );
@@ -67,7 +103,7 @@ export default function ToggleColorMode(props: any) {
         <div style={{ position: 'absolute', height: '100%', width: '100%' }}>
           <Stack sx={{ display: 'flex', direction: 'column', height: '100%' }}>
             <Offset />
-            <Stack sx={{ display: 'flex', flexGrow: 1, overflowY:'auto', overflowX:'hidden' }}>
+            <Stack sx={{ display: 'flex', flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
               <App />
             </Stack>
             <BottomBar></BottomBar>
