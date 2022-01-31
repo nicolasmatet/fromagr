@@ -4,7 +4,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { VinOuFromage } from "../interfaces/Fromage";
 import { FromageService } from "../services/fromage.service";
 import { PairingList } from "./PairingList";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { TalkingCow } from "./TalkingCow";
 import SearchIcon from '@mui/icons-material/Search';
 const fromageService = new FromageService()
@@ -15,18 +14,14 @@ export function PairingPage() {
     const [pairingList, setPairingList] = React.useState(initialPairingList);
     const sourceLabel = searchParams.get("nodeLabel")
     const sourceId = searchParams.get("id")
-    const navigate = useNavigate()
+
     React.useEffect(() => {
         FromageService.awaitPairings(sourceLabel, sourceId, setPairingList);
     }, []);
 
-    const pairingListRender = renderPairingList(pairingList, navigate);
-    const pairingParentRender = renderPairingParent(pairingList)
     return (
 
         <>
-            <ArrowBackIcon color='primary' sx={{ position: 'absolute', m: 3 }} onClick={() => navigate(-1)}></ArrowBackIcon>
-
             <Stack spacing={1} sx={{
                 '& > :not(style)': { m: 1, width: '30ch' },
                 justifyContent: 'center',
@@ -34,21 +29,24 @@ export function PairingPage() {
                 textAlign: 'start',
                 spacing: 1
             }}>
-                {pairingParentRender}
-                {pairingListRender}
+                <RenderPairingParent pairingList={pairingList} ></RenderPairingParent>
+                <RenderPairingList pairingList={pairingList}></RenderPairingList>
             </Stack>
         </>
     )
 }
 
-function renderPairingParent(pairingList: VinOuFromage[] | null) {
+function RenderPairingParent(props: { pairingList: VinOuFromage[] | null }) {
+    const { pairingList } = props
     if (!pairingList || pairingList.length === 0) {
         return <PairingList graphNodes={null} expecting={1}></PairingList>
     }
     return <PairingList graphNodes={[pairingList[0]]} expecting={1}></PairingList>
 
 }
-function renderPairingList(pairingList: VinOuFromage[] | null, navigate:any) {
+function RenderPairingList(props: { pairingList: VinOuFromage[] | null }) {
+    const navigate = useNavigate()
+    const { pairingList } = props
     if (!pairingList) {
         return <PairingList graphNodes={null} expecting={2}></PairingList>
     }

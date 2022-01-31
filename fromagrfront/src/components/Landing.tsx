@@ -37,6 +37,7 @@ export function LandingPage() {
             sx={{
                 '& > :not(style)': { m: 2 },
                 display: 'flex',
+                mt:3,
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center'
