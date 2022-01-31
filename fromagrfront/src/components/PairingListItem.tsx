@@ -87,7 +87,7 @@ function FromagePropertiesRender(props: { graphNode: Fromage }) {
         fromageService.awaitRelatedFromage(graphNode.identity.low, setRelated)
     }, [])
     const relatedRender = related
-        ? linkPropertiesRender([["Voir aussi", related]])
+        ? linkPropertiesRender([["Fromages associés", related]])
         : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
     return (
         <Stack spacing={3}>

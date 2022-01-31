@@ -3,7 +3,8 @@ import { VinOuFromage } from '../interfaces/Fromage';
 import { List, Box, useTheme, Skeleton } from '@mui/material';
 import { LandingResult } from './LandingResult';
 import { TalkingCow } from './TalkingCow';
-import { BackgroundDark, Background } from './Backgrounds';
+import { BackgroundLight } from './backgrounds/BackgroundLight';
+import { BackgroundDark } from './backgrounds/BackgroundDark';
 
 export function LandingResultList(props: { results: VinOuFromage[] | null, isLoading: boolean }) {
     const theme = useTheme();
@@ -20,10 +21,8 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
         </>)
     }
     if (!results) {
-        return (
-            <Box>
-                <img src={theme.palette.mode === 'dark' ? BackgroundDark : Background} />
-            </Box>)
+        const background = theme.palette.mode === 'dark' ? <BackgroundDark /> : <BackgroundLight />
+        return (<Box> {background} </Box>)
     }
 
     if (!results.length) {

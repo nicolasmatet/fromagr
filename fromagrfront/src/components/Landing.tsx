@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FromageService } from '../services/fromage.service';
 import { VinOuFromage } from '../interfaces/Fromage';
-import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import { LandingResultList } from './LandingResultList';
 import { TextFieldWithClear } from './TextFieldWithClear';
 const fromageService = new FromageService()

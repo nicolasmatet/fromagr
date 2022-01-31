@@ -1,13 +1,14 @@
 
 import * as React from 'react';
 import { Typography, useTheme } from '@mui/material';
-import { Talking, TalkingDark } from './Backgrounds';
+import { TalkingLight } from './backgrounds/TalkingLight';
+import { TalkingDark } from './backgrounds/TalkingDark';
 
 
 export function TalkingCow(props: { message: string, action?: any }) {
     const { message, action } = props;
     const theme = useTheme();
-
+    const img = theme.palette.mode === 'dark' ? <TalkingDark/> : <TalkingLight/>
     return (
         <div style={{
             position: 'relative',
@@ -22,8 +23,8 @@ export function TalkingCow(props: { message: string, action?: any }) {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}
-                >{message} {action ? action : ''}</Typography>
-            <img style={{ width: '100%', maxWidth: '400px' }} src={theme.palette.mode === 'dark' ? TalkingDark : Talking} />
+            >{message} {action ? action : ''}</Typography>
+            <div style={{ width: '100%', maxWidth: '400px' }}>{img}</div>
         </div >
     );
 }

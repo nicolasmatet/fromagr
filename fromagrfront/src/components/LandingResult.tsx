@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListItem, ListItemText, ListItemIcon, Link, Typography } from '@mui/material';
+import { ListItem, ListItemText, ListItemIcon } from '@mui/material';
 import { VinOuFromage } from '../interfaces/Fromage';
 import { getIcon } from './Icons';
 import { useNavigate } from 'react-router-dom';
