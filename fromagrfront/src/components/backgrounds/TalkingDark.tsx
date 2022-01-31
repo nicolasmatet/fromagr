@@ -3,5 +3,5 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import TalkinDarkSrc from '../../../public/background/fromager-dark-talk.png'
 
 export function TalkingDark() {
-    return <LazyLoadImage src={TalkinDarkSrc} />
+    return <LazyLoadImage src={TalkinDarkSrc}     effect="blur"    />
 }

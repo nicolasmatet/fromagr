@@ -19,6 +19,7 @@ export function LandingPage() {
     }, []);
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+        console.log("got event", event)
         const fromageName = event.target.value;
         if (fromageName && fromageName.length > 1) {
             setIsLoading(true);

@@ -22,7 +22,7 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
     }
     if (!results) {
         const background = theme.palette.mode === 'dark' ? <BackgroundDark /> : <BackgroundLight />
-        return (<Box> {background} </Box>)
+        return (<Box style={{width:'150%'}}> {background} </Box>)
     }
 
     if (!results.length) {
