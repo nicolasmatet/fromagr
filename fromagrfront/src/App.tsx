@@ -105,7 +105,7 @@ export default function ToggleColorMode(props: any) {
             <Offset />
             <Stack sx={{ display: 'flex', flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
               <App />
-<Stack direction="row">
+<Stack direction="row" spacing={1}>
 <Typography variant="caption">
 Nicolas Matet
 </Typography>
