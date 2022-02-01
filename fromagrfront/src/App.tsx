@@ -3,7 +3,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './components/Landing';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
-import { CssBaseline, PaletteMode, Stack } from '@mui/material';
+import { CssBaseline, PaletteMode, Stack, Typography } from '@mui/material';
 import { PairingPage } from './components/PairingPage';
 import { RootPage } from './components/RootPage';
 import { light } from './components/themes/light';
@@ -105,6 +105,11 @@ export default function ToggleColorMode(props: any) {
             <Offset />
             <Stack sx={{ display: 'flex', flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
               <App />
+<Typography>
+Nicolas Matet
+<a href="https://www.linkedin.com/in/nicolas-matet-644237a3">LinkedIn</a>  
+<a href="https://GitHub.com/nicolasmatet"> GitHub </a>
+</Typography>
             </Stack>
             <BottomBar></BottomBar>
           </Stack>
