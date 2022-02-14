@@ -37,10 +37,10 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
         return (
             <Box sx={{ width: '150%' }} ref={containerRef}>
                 <MovingCow mode={theme.palette.mode} containerRef={containerRef}></MovingCow>
-                <Stack direction='row' sx={{ justifyContent: 'space-around' }}>
-                    <Typography>Nicolas Matet</Typography>
-                    <Link href={"https://github.com/nicolasmatet"}>GitHub</Link>
-                    <Link href={"https://www.linkedin.com/in/nicolas-matet-644237a3/"}>LinkedIn</Link>
+                <Stack direction='row' spacing={1}>
+                    <Typography variant="caption">Nicolas Matet</Typography>
+                    <Link variant="caption" href={"https://github.com/nicolasmatet"}>GitHub</Link>
+                    <Link variant="caption" href={"https://www.linkedin.com/in/nicolas-matet-644237a3/"}>LinkedIn</Link>
                 </Stack>
             </Box >
         )
