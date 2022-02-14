@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { FromageService } from '../services/fromage.service';
 import { VinOuFromage } from '../interfaces/Fromage';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { LandingResultList } from './LandingResultList';
 import { TextFieldWithClear } from './TextFieldWithClear';
+import { MainStack } from './MainStack';
 const fromageService = new FromageService()
 
 export function LandingPage() {
@@ -33,23 +34,22 @@ export function LandingPage() {
 
 
     return (
-        <Box
+        <Stack
             sx={{
                 '& > :not(style)': {
-                    m: 2
+                    m: 1
                 },
-                display: 'flex',
-                mt: 3,
-                flexDirection: 'column',
+                mt:2,
+                spacing: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
             }}
         >
-            <TextFieldWithClear label="Vin ou fromage..." onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
+            <TextFieldWithClear label="Vin ou fromage ?" onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
             <Box sx={{ '& > :not(style)': { width: '28ch' } }} >
                 <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
             </Box>
-        </Box>
+        </Stack>
     );
 
 

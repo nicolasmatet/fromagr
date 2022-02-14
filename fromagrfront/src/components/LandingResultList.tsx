@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { VinOuFromage } from '../interfaces/Fromage';
-import { List, Box, useTheme, Skeleton, Slide, FormControlLabel, Switch, styled } from '@mui/material';
+import { List, Box, useTheme, Skeleton, Slide, FormControlLabel, Switch, styled, Typography, Stack, Link } from '@mui/material';
 import { LandingResult } from './LandingResult';
 import { TalkingCow } from './TalkingCow';
 import { BackgroundLight } from './backgrounds/BackgroundLight';
@@ -37,6 +37,11 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
         return (
             <Box sx={{ width: '150%' }} ref={containerRef}>
                 <MovingCow mode={theme.palette.mode} containerRef={containerRef}></MovingCow>
+                <Stack direction='row' sx={{ justifyContent: 'space-around' }}>
+                    <Typography>Nicolas Matet</Typography>
+                    <Link href={"https://github.com/nicolasmatet"}>GitHub</Link>
+                    <Link href={"https://www.linkedin.com/in/nicolas-matet-644237a3/"}>LinkedIn</Link>
+                </Stack>
             </Box >
         )
     }

@@ -4,7 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { LandingPage } from './Landing';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { urlFavorites, urlSearch, urlSuggestions } from './urls';
 
 
@@ -17,21 +17,36 @@ const BottomNavigationActionStyled = styled((props: any) => {
     })
 }));
 
-export function BottomBar() {
+const links = [
+    { label: 'Recherche', icon: <SearchIcon />, url: urlSearch() },
+    { label: 'Favoris', icon: <FavoriteIcon />, url: urlFavorites() },
+    { label: 'Suggestions', icon: <LightbulbIcon />, url: urlSuggestions() }
+
+]
+
+export function BottomBar(props: any) {
     const [value, setValue] = React.useState(0);
-    const search = urlSearch()
-    const fav = urlFavorites()
-    const sugg = urlSuggestions()
+    const location = useLocation();
+    React.useEffect(() => {
+        let idx = links.findIndex(link => link.url === location.pathname)
+        if(idx>=0){
+            setValue(idx)
+        }
+    }, [location])
+
     return (<BottomNavigation
         showLabels
         value={value}
         onChange={(event: any, newValue: any) => {
+            console.log("value", value)
             setValue(newValue);
         }}
     >
-        <BottomNavigationActionStyled label="Recherche" icon={<SearchIcon />} component={Link} to={search} />
-        <BottomNavigationActionStyled label="Favoris" icon={<FavoriteIcon />} component={Link} to={fav} />
-        <BottomNavigationActionStyled label="Suggestions" icon={<LightbulbIcon />} component={Link} to={sugg} />
+        {links.map(link => <BottomNavigationActionStyled
+            label={link.label}
+            icon={link.icon}
+            component={Link}
+            to={link.url} />)}
     </BottomNavigation>
     )
 }

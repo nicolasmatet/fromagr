@@ -24,13 +24,13 @@ function ScrollToHide(props: any) {
 export function TopBar(props: { goBack?: boolean }) {
   const { goBack } = props
   const theme = useTheme();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const colorMode = React.useContext(ColorModeContext);
   const content = [
     <IconButton key='theme' onClick={colorMode.toggleColorMode} color="inherit">
       {theme.palette.mode === 'dark' ? <Brightness7Icon color="secondary" /> : <Brightness4Icon color="secondary" />}
     </IconButton>,
-    ...(goBack ? [<ArrowBackIcon key='back' color='secondary' onClick={() => navigate(-1)}></ArrowBackIcon>] : []),
+    ...(goBack ? [<ArrowBackIcon key='back' color='secondary' onClick={() => { navigate(-1) }}></ArrowBackIcon>] : []),
   ]
   return (
     <ScrollToHide threshold={0}>

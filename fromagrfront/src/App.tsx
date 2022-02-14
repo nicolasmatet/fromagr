@@ -67,12 +67,12 @@ function App() {
         <PairingPage />
       </>} />
       <Route path={urlFavorites()} element={<>
-        <TopBar />
+        <TopBar goBack={true}/>
         <Favorites />
       </>
       } />
       <Route path={urlSuggestions()} element={<>
-        <TopBar />
+        <TopBar goBack={true}/>
         <Suggestions />
       </>
       } />
