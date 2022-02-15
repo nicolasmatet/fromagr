@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "fromagrfront/dist",
     "ignore": [
       "firebase.json",
       "**/.*",

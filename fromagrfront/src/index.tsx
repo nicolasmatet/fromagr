@@ -23,8 +23,6 @@ import "../public/favicon/android-icon-192x192.png"
 import "../public/favicon/favicon-32x32.png"
 import "../public/favicon/favicon-96x96.png"
 import "../public/favicon/favicon-16x16.png"
-import './i18n';
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
