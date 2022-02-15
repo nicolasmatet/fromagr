@@ -64,7 +64,7 @@ function FavoriteItem(props: { node: VinOuFromage }) {
     const navigate = useNavigate();
     const doPairing = () => navigate(urlPairing(node.labels[0], node.identity.low));
     return (
-        <Card onClick={doPairing} sx={{ maxWidth: 345 }}>
+        <Card onClick={doPairing}>
             <CardHeader
                 avatar={
                     icon

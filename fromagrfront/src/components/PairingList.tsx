@@ -14,7 +14,7 @@ export function PairingList(props: { expecting?: number, children?: any }) {
         content = children
     }
     return (
-        <List sx={{ '& > :not(style)': { m: 2 } }} component="nav" aria-label="fromages">
+        <List sx={{ '& > :not(style)': { m: 2, width:'30ch' } }} component="nav" aria-label="fromages">
             {children}
         </List>
 

@@ -1,24 +1,10 @@
-import { AppBar, Box, IconButton, Slide, Toolbar, Typography, useScrollTrigger, useTheme } from "@mui/material";
+import { Fab, useTheme } from "@mui/material";
 import * as React from 'react';
 import { ColorModeContext } from "../App";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
 import { useNavigate } from "react-router-dom";
-
-function ScrollToHide(props: any) {
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: props.threshold
-  });
-  console.log("trigger", trigger)
-  return (
-    <Slide appear={true} direction="down" in={!trigger}>
-      {props.children}
-    </Slide>
-  );
-}
 
 
 export function TopBar(props: { goBack?: boolean }) {
@@ -27,18 +13,22 @@ export function TopBar(props: { goBack?: boolean }) {
   const navigate = useNavigate();
   const colorMode = React.useContext(ColorModeContext);
   const content = [
-    <IconButton key='theme' onClick={colorMode.toggleColorMode} color="inherit">
-      {theme.palette.mode === 'dark' ? <Brightness7Icon color="secondary" /> : <Brightness4Icon color="secondary" />}
-    </IconButton>,
-    ...(goBack ? [<ArrowBackIcon key='back' color='secondary' onClick={() => { navigate(-1) }}></ArrowBackIcon>] : []),
+    <Fab sx={{ position: 'fixed', top: 0, right: 0, m: 2, zIndex:9999 }}
+      onClick={colorMode.toggleColorMode}
+      size='small' color="secondary" aria-label="theme">
+      {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+    </Fab >,
+    ...(goBack ? [
+      <Fab sx={{ position: 'fixed', top: 0, left: 0, m: 2, zIndex:9999 }}
+        onClick={() => { navigate(-1) }}
+        size='small' color="secondary" aria-label="back">
+        <ArrowBackIcon />
+      </Fab>
+    ] : []),
   ]
   return (
-    <ScrollToHide threshold={0}>
-      <AppBar position="fixed" >
-        <Toolbar style={{ direction: 'rtl' }} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
-          {content}
-        </Toolbar>
-      </AppBar>
-    </ScrollToHide>
+    <>
+      {content}
+    </>
   );
 };

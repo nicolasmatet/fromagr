@@ -34,22 +34,12 @@ export function LandingPage() {
 
 
     return (
-        <Stack
-            sx={{
-                '& > :not(style)': {
-                    m: 1
-                },
-                mt:2,
-                spacing: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
+        <MainStack >
             <TextFieldWithClear label="Vin ou fromage ?" onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}></TextFieldWithClear>
             <Box sx={{ '& > :not(style)': { width: '28ch' } }} >
                 <LandingResultList results={fromageList} isLoading={isLoading}></LandingResultList>
             </Box>
-        </Stack>
+        </MainStack>
     );
 
 

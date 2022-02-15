@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction, styled, Zoom } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper, styled, Zoom } from '@mui/material';
 import * as React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -34,20 +34,25 @@ export function BottomBar(props: any) {
         }
     }, [location])
 
-    return (<BottomNavigation
-        showLabels
-        value={value}
-        onChange={(event: any, newValue: any) => {
-            console.log("value", value)
-            setValue(newValue);
-        }}
-    >
-        {links.map(link => <BottomNavigationActionStyled
-            key={link.label}
-            label={link.label}
-            icon={link.icon}
-            component={Link}
-            to={link.url} />)}
-    </BottomNavigation>
+    return (
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+
+            <BottomNavigation
+                showLabels
+                value={value}
+                onChange={(event: any, newValue: any) => {
+                    console.log("value", value)
+                    setValue(newValue);
+                }}
+            >
+                {links.map(link => <BottomNavigationActionStyled
+                    key={link.label}
+                    label={link.label}
+                    icon={link.icon}
+                    component={Link}
+                    to={link.url} />)}
+            </BottomNavigation>
+        </Paper>
+
     )
 }

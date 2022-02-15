@@ -35,7 +35,7 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
     }
     if (!results) {
         return (
-            <Box sx={{ width: '150%' }} ref={containerRef}>
+            <Box sx={{ width: '150%'}} ref={containerRef}>
                 <MovingCow mode={theme.palette.mode} containerRef={containerRef}></MovingCow>
                 <Stack direction='row' spacing={1}>
                     <Typography variant="caption">Nicolas Matet</Typography>
@@ -53,7 +53,7 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
     }
 
     return (
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }} component="nav" aria-label="fromages">
+        <List sx={{ bgcolor: 'background.paper' }} component="nav" aria-label="fromages">
             {results.map(res => <LandingResult key={res.identity.low} result={res}></LandingResult>)}
         </List>
 

@@ -137,7 +137,7 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
         Enregistrer
     </Button>
     return (
-        <Card key={graphNode.identity.low} sx={{ maxWidth: 345 }}>
+        <Card key={graphNode.identity.low}>
             <CardHeader
                 avatar={
                     React.createElement(IconComponent)

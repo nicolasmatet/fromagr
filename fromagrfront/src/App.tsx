@@ -19,7 +19,6 @@ import { Suggestions } from './components/Suggestions';
 
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const getDesignTokens = (mode: PaletteMode) => ({
   ...(mode === 'light' ? light : dark),
@@ -102,7 +101,6 @@ export default function ToggleColorMode(props: any) {
 
         <div style={{ position: 'absolute', height: '100%', width: '100%' }}>
           <Stack sx={{ display: 'flex', direction: 'column', height: '100%' }}>
-            <Offset />
             <Stack sx={{ display: 'flex', flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
               <App />
             </Stack>
