@@ -29,7 +29,7 @@ export function BottomBar(props: any) {
     const location = useLocation();
     React.useEffect(() => {
         let idx = links.findIndex(link => link.url === location.pathname)
-        if(idx>=0){
+        if (idx >= 0) {
             setValue(idx)
         }
     }, [location])
@@ -43,6 +43,7 @@ export function BottomBar(props: any) {
         }}
     >
         {links.map(link => <BottomNavigationActionStyled
+            key={link.label}
             label={link.label}
             icon={link.icon}
             component={Link}

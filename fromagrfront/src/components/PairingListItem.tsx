@@ -9,15 +9,16 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import CheckIcon from '@mui/icons-material/Check';
 import { CardActions, Link, Skeleton, Stack } from '@mui/material';
-import { Fromage, isFromage, isVin, Vin, VinOuFromage, VinProperties } from '../interfaces/Fromage';
+import { Fromage, fromagePropertiesKeys, isFromage, isVin, Vin, VinOuFromage, vinPropertiesKeys } from '../interfaces/Fromage';
 import { getIcon } from './Icons';
 import { GraphNode } from '../interfaces/GraphNode';
 import { urlPairing } from './urls';
 import { useEffect } from 'react';
 import { FromageService } from '../services/fromage.service';
 import { addFavorite, isFavorite } from '../services/favorites';
+import { useTranslation } from "react-i18next";
 
 const fromageService = new FromageService()
 
@@ -54,10 +55,11 @@ function linkPropertiesRender(linksGroups: [string, GraphNode<any>[]][]) {
     });
 
 }
-function defaultPropertiesRender(propertiesGroups: [string, any][]) {
-    return propertiesGroups.map(([title, values]) => {
-        return (<Stack spacing={1} key={title}>
-            <Typography variant='h5'>{title}</Typography>
+function defaultPropertiesRender(propertiesKeys: string[], propertiesValues: any[]) {
+    const { t, i18n } = useTranslation();
+    return propertiesValues.map((values, idx) => {
+        return (<Stack spacing={1} key={idx}>
+            <Typography variant='h5'>{t(propertiesKeys[idx])}</Typography>
             <Typography paragraph>
                 {renderString(values)}
             </Typography>
@@ -67,10 +69,10 @@ function defaultPropertiesRender(propertiesGroups: [string, any][]) {
 
 function VinPropertiesRender(props: { graphNode: Vin }) {
     const { graphNode } = props;
-    const propertiesGroups = Array.from(Object.entries(graphNode.properties));
+    const propertiesValues = vinPropertiesKeys.map((key) => graphNode.properties[key]);
     return (
         <Stack spacing={3}>
-            {defaultPropertiesRender(propertiesGroups)}
+            {defaultPropertiesRender(vinPropertiesKeys, propertiesValues)}
             {linkPropertiesRender([["En savoir plus", [graphNode]]])}
         </Stack>)
 }
@@ -85,9 +87,10 @@ function FromagePropertiesRender(props: { graphNode: Fromage }) {
         ? linkPropertiesRender([["Fromages associés", related]])
         : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
 
+    const propertiesValues = fromagePropertiesKeys.map((key) => graphNode.properties[key]);
     return (
         <Stack spacing={3}>
-            {defaultPropertiesRender(Array.from(Object.entries(graphNode.properties)))}
+            {defaultPropertiesRender(fromagePropertiesKeys, propertiesValues)}
             {linkPropertiesRender([["En savoir plus", [graphNode]]])}
             {relatedRender}
         </Stack>
@@ -112,24 +115,29 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const { graphNode } = props;
     const [expanded, setExpanded] = React.useState(false);
+    const [fav, setFav] = React.useState(isFavorite(graphNode));
+
     const title = graphNode.properties.name;
     const properties =
         isFromage(graphNode) ? <FromagePropertiesRender graphNode={graphNode as Fromage}></FromagePropertiesRender>
             : isVin(graphNode) ? <VinPropertiesRender graphNode={graphNode as Vin}></VinPropertiesRender>
-                : defaultPropertiesRender(Array.from(Object.entries(graphNode.properties)));
+                : defaultPropertiesRender(Array.from(Object.keys(graphNode.properties)),
+                    Array.from(Object.values(graphNode.properties)));
     const IconComponent = getIcon(graphNode);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const fav = isFavorite(graphNode)
-    const actions = fav ? <></> : <Button
-        onClick={() => addFavorite(graphNode)}
+    const actions = <Button
+        onClick={() => {
+            addFavorite(graphNode);
+            setFav(true)
+        }}
         variant="outlined"
-        startIcon={<FavoriteIcon />}>
+        startIcon={fav ? <CheckIcon /> : <FavoriteIcon />}>
         Enregistrer
     </Button>
     return (
-        <Card key={graphNode.identity.low}  sx={{ maxWidth: 345 }}>
+        <Card key={graphNode.identity.low} sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
                     React.createElement(IconComponent)
@@ -153,11 +161,10 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
                 <CardContent>
                     {properties}
                 </CardContent>
-                <CardActions sx={{justifyContent:'end'}}>
+                <CardActions sx={{ justifyContent: 'end' }}>
                     {actions}
                 </CardActions>
             </Collapse>
         </Card>
     )
 }
-
