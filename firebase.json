@@ -1,10 +1,17 @@
 {
   "hosting": {
+    "predeploy": "cd fromagrfront && npm ci && npm run build-firebase",
     "public": "fromagrfront/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }

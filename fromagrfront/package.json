@@ -39,6 +39,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode=development",
     "build": "npx webpack --config webpack.config.js",
+    "build-firebase": "export API_URL=https://fromagr.herokuapp.com/api && npx webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
