@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 import { FromageService } from '../services/fromage.service';
 import { addFavorite, isFavorite } from '../services/favorites';
 import { useTranslation } from "react-i18next";
-import i18n  from '../i18n' ;
+import i18n from '../i18n';
 
 const fromageService = new FromageService()
 
@@ -144,6 +144,7 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
     return (
         <Card key={graphNode.identity.low}>
             <CardHeader
+                onClick={handleExpandClick}
                 avatar={
                     React.createElement(IconComponent)
                 }
@@ -152,7 +153,6 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
                         {fav ? <IconButton><FavoriteIcon /></IconButton> : <></>}
                         <ExpandMore
                             expand={expanded}
-                            onClick={handleExpandClick}
                             aria-expanded={expanded}
                             aria-label="show more"
                         >

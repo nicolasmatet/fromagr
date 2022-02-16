@@ -5,7 +5,6 @@ import * as React from "react";
 
 export function PairingList(props: { expecting?: number, children?: any }) {
     const { expecting, children } = props;
-    console.log(children);
     let content;
     if (!children) {
         content = Array.from(Array(expecting ? expecting : 1)).map((_, i) => <Skeleton key={i} variant="rectangular" height="64px" />)

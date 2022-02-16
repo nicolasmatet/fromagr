@@ -41,7 +41,6 @@ export function BottomBar(props: any) {
                 showLabels
                 value={value}
                 onChange={(event: any, newValue: any) => {
-                    console.log("value", value)
                     setValue(newValue);
                 }}
             >

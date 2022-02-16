@@ -90,21 +90,25 @@ export function FavoriteList(props: { favorites: VinOuFromage[] | null }) {
             }
         }}><TalkingCow message={"Vous n'aimez rien."}></TalkingCow></Box>
     }
+
     return (<PairingList>
-        {favorites.map(f => {
-            return <FavoriteItem node={f}></FavoriteItem>
+        {favorites.map((f, idx) => {
+            return <FavoriteItem key={idx} node={f}></FavoriteItem>
         })}
     </PairingList>)
 }
 
 export function Favorites() {
+
     const [favorites, setFavorites] = React.useState<VinOuFromage[] | null>(null)
     React.useEffect(() => {
-        const subscription = favoriteSubject.subscribe(f => setFavorites(f))
+        const subscription = favoriteSubject.subscribe(f => {
+            setFavorites([...f])
+        })
         refreshFavorites();
         return () => subscription.unsubscribe();
-    }, []
-    )
+    }, [])
+
     return (
         <MainStack>
             <FavoriteList favorites={favorites}></FavoriteList>
