@@ -14,6 +14,7 @@ import { TopBar } from './components/TopBar';
 import { BottomBar } from './components/BottomBar';
 import { Favorites } from './components/Favorites';
 import { Suggestions } from './components/Suggestions';
+import { wakeup } from './services/api';
 
 
 
@@ -54,6 +55,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 
 function App() {
+  React.useEffect(() => { wakeup().then(() => console.log("Prêt !")) }, [])
   return (
     <Routes>
       <Route path={urlSearch()} element={<>
@@ -66,12 +68,12 @@ function App() {
         <PairingPage />
       </>} />
       <Route path={urlFavorites()} element={<>
-        <TopBar goBack={true}/>
+        <TopBar goBack={true} />
         <Favorites />
       </>
       } />
       <Route path={urlSuggestions()} element={<>
-        <TopBar goBack={true}/>
+        <TopBar goBack={true} />
         <Suggestions />
       </>
       } />

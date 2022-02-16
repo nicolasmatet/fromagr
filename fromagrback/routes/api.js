@@ -15,6 +15,10 @@ router.get("/", function (req, res) {
     res.send("API is working");
 });
 
+router.get("/awake", function (req, res) {
+    jsonResponse(res, fromageService.wakeup())
+});
+
 router.get("/fromage/get", function (req, res) {
     const fromageName = req.query.name.toLowerCase()
     jsonResponse(res, fromageService.getByName(fromageName))

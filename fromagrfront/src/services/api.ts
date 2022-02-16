@@ -2,6 +2,10 @@ import ConfigData from "ConfigData";
 
 console.log("ConfigData.API_URL", ConfigData.API_URL);
 
+export async function wakeup(){
+    return fetch(`${ConfigData.API_URL}/wakeup`).then(response => response.json())
+}
+
 export async function searchFromageByName(fromageName: string) {
     return fetch(`${ConfigData.API_URL}/fromage/search?name=${fromageName}`).then(response => response.json())
 }

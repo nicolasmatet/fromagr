@@ -4,6 +4,14 @@ const DbConnector = require('../db/Connector.js');
 const connector = new DbConnector()
 const RxOp = require('rxjs/operators');
 
+function wakeup(){
+    const req = `MATCH (f:${Fromage.label}) RETURN f LIMIT 1`;
+    return connector.execute(req)
+        .pipe(RxOp.map(fromage => {
+            return fromage._fields[0];
+        }))
+}
+
 function getByName(fromageName) {
     const req = `MATCH (f:${Fromage.label}) WHERE f.${Fromage.name}=$name RETURN f`;
     return connector.execute(req, { name: fromageName })
@@ -67,7 +75,7 @@ function create(fromageName) {
     return connector.executeWrite(req, { name: fromageName })
 }
 
-
+exports.wakeup = wakeup
 exports.searchByName = searchByName
 exports.getByName = getByName
 exports.create = create
