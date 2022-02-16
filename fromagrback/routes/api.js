@@ -15,7 +15,7 @@ router.get("/", function (req, res) {
     res.send("API is working");
 });
 
-router.get("/awake", function (req, res) {
+router.get("/wakeup", function (req, res) {
     jsonResponse(res, fromageService.wakeup())
 });
 

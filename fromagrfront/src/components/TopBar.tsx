@@ -18,7 +18,7 @@ export function TopBar(props: { goBack?: boolean }) {
   const colorMode = React.useContext(ColorModeContext);
   const content = [
 
-    <Fab sx={{ position: 'fixed', top: 0, right: 0, m: 2, zIndex: 9999 }}
+    <Fab key={'theme'} sx={{ position: 'fixed', top: 0, right: 0, m: 2, zIndex: 9999 }}
       onClick={colorMode.toggleColorMode}
       size='small' color="secondary" aria-label="theme">
       {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
