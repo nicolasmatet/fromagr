@@ -15,6 +15,8 @@ import { BottomBar } from './components/BottomBar';
 import { Favorites } from './components/Favorites';
 import { Suggestions } from './components/Suggestions';
 import { wakeup } from './services/api';
+import i18n from './i18n';
+import { useTranslation } from "react-i18next";
 
 
 
@@ -55,6 +57,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 
 function App() {
+  const { t } = useTranslation('translation', {i18n});
   React.useEffect(() => { wakeup().then(() => console.log("Prêt !")) }, [])
   return (
     <Routes>
@@ -114,4 +117,3 @@ export default function ToggleColorMode(props: any) {
     </ColorModeContext.Provider >
   );
 }
-

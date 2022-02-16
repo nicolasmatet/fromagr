@@ -7,7 +7,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
-            "name": "name",
+            "name": "nom",
             "lait": "milk",
             "couleur": "color"
 
@@ -29,14 +29,7 @@ i18n
         lng: "fr",
         interpolation: {
             escapeValue: false
-        },
-        debug: true,
-        saveMissing: true,
-        updateMissing: true,
-        appendNamespaceToMissingKey: true,
-        missingKeyHandler: (lng, ns, key, fallbackValue, updateMissing, options) => {
-            return key
-        },
+        }
     });
 
 export default i18n;

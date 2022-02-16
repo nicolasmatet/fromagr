@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 import { FromageService } from '../services/fromage.service';
 import { addFavorite, isFavorite } from '../services/favorites';
 import { useTranslation } from "react-i18next";
+import i18n  from '../i18n' ;
 
 const fromageService = new FromageService()
 
@@ -42,12 +43,12 @@ function RenderLink(props: { graphNode: GraphNode<any> }) {
 function linkPropertiesRender(linksGroups: [string, GraphNode<any>[]][]) {
     return linksGroups.map(([title, graphNodes]) => {
         if (!graphNodes || graphNodes.length === 0) {
-            return <></>
+            return null
         }
         return (
             <Stack spacing={1} key={title}>
-                <Typography variant='h5'>{title}</Typography>
-                <Stack spacing={1}>
+                <Typography key='title' variant='h5'>{title}</Typography>
+                <Stack key='links' spacing={1}>
                     {graphNodes.map((link) => <RenderLink key={link.identity.low} graphNode={link} ></RenderLink>)}
                 </Stack>
             </Stack>
@@ -56,11 +57,11 @@ function linkPropertiesRender(linksGroups: [string, GraphNode<any>[]][]) {
 
 }
 function defaultPropertiesRender(propertiesKeys: string[], propertiesValues: any[]) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return propertiesValues.map((values, idx) => {
         return (<Stack spacing={1} key={idx}>
-            <Typography variant='h5'>{t(propertiesKeys[idx])}</Typography>
-            <Typography paragraph>
+            <Typography key='title' variant='h5'>{t(propertiesKeys[idx])}</Typography>
+            <Typography key='value' paragraph>
                 {renderString(values)}
             </Typography>
         </Stack>)
@@ -71,7 +72,7 @@ function VinPropertiesRender(props: { graphNode: Vin }) {
     const { graphNode } = props;
     const propertiesValues = vinPropertiesKeys.map((key) => graphNode.properties[key]);
     return (
-        <Stack spacing={3}>
+        <Stack key='props' spacing={3}>
             {defaultPropertiesRender(vinPropertiesKeys, propertiesValues)}
             {linkPropertiesRender([["En savoir plus", [graphNode]]])}
         </Stack>)
@@ -88,11 +89,15 @@ function FromagePropertiesRender(props: { graphNode: Fromage }) {
         : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
 
     const propertiesValues = fromagePropertiesKeys.map((key) => graphNode.properties[key]);
+
+    const content = [
+        defaultPropertiesRender(fromagePropertiesKeys, propertiesValues),
+        linkPropertiesRender([["En savoir plus", [graphNode]]]),
+        ...(relatedRender ? [relatedRender] : [])
+    ]
     return (
-        <Stack spacing={3}>
-            {defaultPropertiesRender(fromagePropertiesKeys, propertiesValues)}
-            {linkPropertiesRender([["En savoir plus", [graphNode]]])}
-            {relatedRender}
+        <Stack key='props' spacing={3}>
+            {...content}
         </Stack>
     )
 }
