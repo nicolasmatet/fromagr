@@ -4,22 +4,22 @@ export const dark: ThemeOptions = {
     palette: {
         mode: 'dark',
         primary: {
-            main: '#863099',
-            dark: '#56006a',
-            light: '#b860ca',
+            main: '#FA8989',
+            dark: '#FA8989',
+            light: '#FA8989',
         },
         secondary: {
-            main: '#f50057',
+            main: '#4A8D81',
         },
         background: {
-            default: '#212121',
-            paper: '#3b1641',
+            default: '#161515',
+            paper: '#040404',
         },
         error: {
-            main: '#ff8282',
+            main: '#FA8989',
         },
         warning: {
-            main: '#ff9800',
+            main: '#FA8989',
         },
     },
     shape: {

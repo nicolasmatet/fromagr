@@ -43,6 +43,6 @@ export function TopBar(props: { goBack?: boolean }) {
   return (
     <>
       {content}
-    </>
+    </> 
   );
 };
