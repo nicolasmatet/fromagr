@@ -2,7 +2,7 @@ import { Box, Card, CardHeader, IconButton, ListItem, ListItemIcon, ListItemText
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VinOuFromage } from '../interfaces/Fromage';
-import { favoriteSubject, refreshFavorites, removeFavorite } from '../services/favorites';
+import { favoriteSubject, refreshFavorites, removeFavorite } from '../services/favorites.service';
 import { getIcon } from './Icons';
 import { MainStack } from './MainStack';
 import { PairingList } from './PairingList';

@@ -10,12 +10,8 @@ export function urlPairing(nodeLabel?: string, id?: number) {
     return base + `?nodeLabel=${nodeLabel}&id=${id}`
 }
 
-export function urlSuggestions(id?: number) {
-    const base = '/f/suggestions'
-    if (id === null || id === undefined) {
-        return base
-    }
-    return base + `?id=${id}`
+export function urlSuggestions(random: boolean = false) {
+    return random ? '/f/randomsuggestions' : '/f/suggestion'
 }
 
 export function urlFavorites() {

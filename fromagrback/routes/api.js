@@ -1,5 +1,8 @@
 var express = require("express");
 var fromageService = require("../src/services/fromageService.js");
+var utilsService = require("../src/services/utilsService.js");
+var suggestionService = require("../src/services/suggestionService.js");
+
 var router = express.Router();
 
 function jsonResponse(res, subject) {
@@ -16,7 +19,7 @@ router.get("/", function (req, res) {
 });
 
 router.get("/wakeup", function (req, res) {
-    jsonResponse(res, fromageService.wakeup())
+    jsonResponse(res, utilsService.wakeup())
 });
 
 router.get("/fromage/get", function (req, res) {
@@ -43,6 +46,15 @@ router.get("/vin/pairing", function (req, res) {
 router.get("/fromage/related", function (req, res) {
     const vinId = parseInt(req.query.id)
     jsonResponse(res, fromageService.relatedFromages(vinId))
+});
+
+router.get("/suggestion", function (req, res) {
+    jsonResponse(res, suggestionService.getSuggestionOfTheDay())
+});
+
+
+router.get("/randomsuggestion", function (req, res) {
+    jsonResponse(res, suggestionService.getRandomSuggestion())
 });
 
 module.exports = router;

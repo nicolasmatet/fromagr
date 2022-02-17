@@ -1,6 +1,6 @@
 import { Fromage, VinOuFromage } from "../interfaces/Fromage";
 import { Subject } from 'rxjs';
-import { searchFromageByName, getVinsForFromage, getFromageForVin, getRelatedFromage } from "./api";
+import { searchFromageByName, getVinsForFromage, getFromageForVin, getRelatedFromage } from "./api.service";
 import { debounceTime } from 'rxjs/operators';
 
 export class FromageService {

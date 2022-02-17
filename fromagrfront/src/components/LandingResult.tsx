@@ -5,7 +5,7 @@ import { getIcon } from './Icons';
 import { useNavigate } from 'react-router-dom';
 import { urlPairing } from './urls';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { isFavorite } from '../services/favorites';
+import { isFavorite } from '../services/favorites.service';
 
 export function LandingResult(props: { result: VinOuFromage }) {
     const { result } = props;

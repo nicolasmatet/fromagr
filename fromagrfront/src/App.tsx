@@ -14,7 +14,7 @@ import { TopBar } from './components/TopBar';
 import { BottomBar } from './components/BottomBar';
 import { Favorites } from './components/Favorites';
 import { Suggestions } from './components/Suggestions';
-import { wakeup } from './services/api';
+import { wakeup } from './services/api.service';
 import i18n from './i18n';
 import { useTranslation } from "react-i18next";
 

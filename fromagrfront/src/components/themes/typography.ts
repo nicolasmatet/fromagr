@@ -20,6 +20,6 @@ declare module '@mui/material/styles' {
 
 export const typography: TypographyVariantsOptions = {
     cow: {
-        fontFamily: 'Indie Flower',
+        fontFamily: 'Itim',
     },
 } 

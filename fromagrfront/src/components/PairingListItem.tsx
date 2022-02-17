@@ -17,7 +17,7 @@ import { GraphNode } from '../interfaces/GraphNode';
 import { urlPairing } from './urls';
 import { useEffect } from 'react';
 import { FromageService } from '../services/fromage.service';
-import { addFavorite, isFavorite } from '../services/favorites';
+import { addFavorite, isFavorite } from '../services/favorites.service';
 import { useTranslation } from "react-i18next";
 import i18n from '../i18n';
 
