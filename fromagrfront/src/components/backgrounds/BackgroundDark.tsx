@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import BackgroundDarkSrc from '../../../public/background/fromager-logo-dark.png';
+import { ProgressiveImg } from './ProgressiveImg';
 
-export function BackgroundDark() {
-    return <LazyLoadImage src={BackgroundDarkSrc} effect="blur" />
+export function BackgroundDark(props: any) {
+    return <ProgressiveImg src={BackgroundDarkSrc} {...props} />
 
 }

@@ -87,8 +87,12 @@ export function FavoriteList(props: { favorites: VinOuFromage[] | null }) {
         return <Box sx={{
             '& > :not(style)': {
                 m: 3
-            }
-        }}><TalkingCow message={"Vous n'aimez rien."}></TalkingCow></Box>
+            },
+        }}>
+            {/* <div style={{ paddingBottom: '175.75%' }}></div> */}
+            <TalkingCow
+                message={"Vous n'aimez rien."}></TalkingCow>
+        </Box>
     }
 
     return (<PairingList>

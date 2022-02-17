@@ -7,9 +7,11 @@ import { BackgroundLight } from './backgrounds/BackgroundLight';
 import { BackgroundDark } from './backgrounds/BackgroundDark';
 
 const MovingCow = styled((props: any) => {
-    const background = props.mode === 'dark' ? <BackgroundDark /> : <BackgroundLight />
+    const style={ position: 'absolute', top: 0 }
+    const background = props.mode === 'dark' ? <BackgroundDark style={style}/> : <BackgroundLight style={style}/>
     return <Slide direction="up" in={true} container={props.containerRef.current}>
-        <div style={{ width: '150%' }}>
+        <div style={{ width: '150%', position: 'relative' }}>
+            <div style={{ paddingBottom: '175.5%' }} />
             {background}
         </div>
     </Slide>;
@@ -35,7 +37,7 @@ export function LandingResultList(props: { results: VinOuFromage[] | null, isLoa
     }
     if (!results) {
         return (
-            <Box sx={{ width: '150%'}} ref={containerRef}>
+            <Box sx={{ width: '150%' }} ref={containerRef}>
                 <MovingCow mode={theme.palette.mode} containerRef={containerRef}></MovingCow>
                 <Stack direction='row' spacing={1}>
                     <Typography variant="caption">Nicolas Matet</Typography>

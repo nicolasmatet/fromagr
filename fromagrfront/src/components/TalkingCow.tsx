@@ -5,11 +5,11 @@ import { TalkingLight } from './backgrounds/TalkingLight';
 import { TalkingDark } from './backgrounds/TalkingDark';
 
 
-export function TalkingCow(props: { message: string | null, action?: any }) {
-    const { message, action } = props;
+export function TalkingCow(props: { message: string | null, action?: any, style?: any }) {
+    const { message, action, style } = props;
     const theme = useTheme();
-    const img = theme.palette.mode === 'dark' ? <TalkingDark /> : <TalkingLight />
-    const content = message ? message : <Stack sx={{width:'90%'}}>{[1, 2, 3].map((i) => <Skeleton variant="text" key={i} />)}</Stack>
+    const img = theme.palette.mode === 'dark' ? <TalkingDark style={style} /> : <TalkingLight style={style} />
+    const content = message ? message : <Stack sx={{ width: '90%' }}>{[1, 2, 3].map((i) => <Skeleton variant="text" key={i} />)}</Stack>
     return (
         <div style={{
             position: 'relative',

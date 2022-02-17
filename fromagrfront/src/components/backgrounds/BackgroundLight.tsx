@@ -1,7 +1,8 @@
 import BackgroundLightSrc from '../../../public/background/fromager-logo.png';
 import * as React from 'react';
+import { ProgressiveImg } from './ProgressiveImg';
 
 export function BackgroundLight(props: any) {
-    return (<img src={BackgroundLightSrc} {...props} />)
+    return <ProgressiveImg src={BackgroundLightSrc} {...props} />
 }
 

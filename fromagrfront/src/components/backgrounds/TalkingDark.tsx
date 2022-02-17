@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import TalkinDarkSrc from '../../../public/background/fromager-dark-talk.png'
+import { ProgressiveImg } from './ProgressiveImg';
 
-export function TalkingDark() {
-    return <LazyLoadImage src={TalkinDarkSrc}     effect="blur"    />
+export function TalkingDark(props: any) {
+    return <ProgressiveImg src={TalkinDarkSrc}     {...props} />
 }
