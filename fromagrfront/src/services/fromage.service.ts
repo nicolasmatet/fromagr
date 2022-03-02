@@ -1,6 +1,6 @@
-import { Fromage, VinOuFromage } from "../interfaces/Fromage";
+import { Fromage, Vin, VinOuFromage } from "../interfaces/Fromage";
 import { Subject } from 'rxjs';
-import { searchFromageByName, getVinsForFromage, getFromageForVin, getRelatedFromage } from "./api.service";
+import { searchFromageByName, getVinsForFromage, getFromageForVin, getRelatedFromage, getRelatedVin } from "./api.service";
 import { debounceTime } from 'rxjs/operators';
 
 export class FromageService {
@@ -28,6 +28,12 @@ export class FromageService {
         const related = (await getRelatedFromage(fromageId)).map((p: [Fromage]) => p[0])
         callback(related)
     }
+
+    async awaitRelatedVin(vinId: number, callback: any) {
+        const related = (await getRelatedVin(vinId)).map((p: [Vin]) => p[0])
+        callback(related)
+    }
+
     static async awaitPairings(sourceLabel: string | null, sourceId: string | null, callback: any) {
         const pairings = await FromageService.getPairings(sourceLabel, sourceId)
         callback(pairings)

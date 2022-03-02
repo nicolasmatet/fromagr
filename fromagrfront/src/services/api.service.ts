@@ -26,7 +26,13 @@ export async function getRelatedFromage(fromageId: number) {
         return []
     }
     return fetch(`${ConfigData.API_URL}/fromage/related?id=${fromageId}`).then(response => response.json())
+}
 
+export async function getRelatedVin(vinId: number) {
+    if (!vinId) {
+        return []
+    }
+    return fetch(`${ConfigData.API_URL}/vin/related?id=${vinId}`).then(response => response.json())
 }
 
 export async function getRandomSuggestion(){

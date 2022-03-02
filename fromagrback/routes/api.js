@@ -44,8 +44,13 @@ router.get("/vin/pairing", function (req, res) {
 });
 
 router.get("/fromage/related", function (req, res) {
+    const fromageId = parseInt(req.query.id)
+    jsonResponse(res, fromageService.relatedFromages(fromageId))
+});
+
+router.get("/vin/related", function (req, res) {
     const vinId = parseInt(req.query.id)
-    jsonResponse(res, fromageService.relatedFromages(vinId))
+    jsonResponse(res, fromageService.relatedVins(vinId))
 });
 
 router.get("/suggestion", function (req, res) {

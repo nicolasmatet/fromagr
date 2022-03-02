@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
 import { CardActions, Link, Skeleton, Stack } from '@mui/material';
 import { Fromage, fromagePropertiesKeys, isFromage, isVin, Vin, VinOuFromage, vinPropertiesKeys } from '../interfaces/Fromage';
-import { getIcon } from './Icons';
+import { CheeseIcon, getIcon, WineIcon } from './Icons';
 import { GraphNode } from '../interfaces/GraphNode';
 import { urlPairing } from './urls';
 import { useEffect } from 'react';
@@ -20,7 +20,8 @@ import { FromageService } from '../services/fromage.service';
 import { addFavorite, isFavorite } from '../services/favorites.service';
 import { useTranslation } from "react-i18next";
 import i18n from '../i18n';
-
+import { useNavigate } from 'react-router-dom';
+import ShortcutIcon from '@mui/icons-material/Shortcut';
 const fromageService = new FromageService()
 
 function renderString(prop: any) {
@@ -70,11 +71,23 @@ function defaultPropertiesRender(propertiesKeys: string[], propertiesValues: any
 
 function VinPropertiesRender(props: { graphNode: Vin }) {
     const { graphNode } = props;
+    const [related, setRelated] = React.useState<Fromage[] | null>(null)
+    useEffect(() => {
+        fromageService.awaitRelatedVin(graphNode.identity.low, setRelated)
+    }, [])
+    console.log("VinPropertiesRender related", related);
+
+    const relatedRender = related
+        ? linkPropertiesRender([["Cépages ou appellations", related]])
+        : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
     const propertiesValues = vinPropertiesKeys.map((key) => graphNode.properties[key]);
+    const content = [
+        defaultPropertiesRender(vinPropertiesKeys, propertiesValues),
+        ...(relatedRender ? [relatedRender] : [])
+    ]
     return (
         <Stack key='props' spacing={3}>
-            {defaultPropertiesRender(vinPropertiesKeys, propertiesValues)}
-            {linkPropertiesRender([["En savoir plus", [graphNode]]])}
+            {...content}
         </Stack>)
 }
 
@@ -92,7 +105,6 @@ function FromagePropertiesRender(props: { graphNode: Fromage }) {
 
     const content = [
         defaultPropertiesRender(fromagePropertiesKeys, propertiesValues),
-        linkPropertiesRender([["En savoir plus", [graphNode]]]),
         ...(relatedRender ? [relatedRender] : [])
     ]
     return (
@@ -119,6 +131,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const { graphNode } = props;
+    const navigate = useNavigate();
     const [expanded, setExpanded] = React.useState(false);
     const [fav, setFav] = React.useState(isFavorite(graphNode));
 
@@ -132,15 +145,22 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const actions = <Button
-        onClick={() => {
-            addFavorite(graphNode);
-            setFav(true)
-        }}
-        variant="outlined"
-        startIcon={fav ? <CheckIcon /> : <FavoriteIcon />}>
-        Enregistrer
-    </Button>
+    const actions = [
+        <Button
+            onClick={() => navigate(urlPairing(graphNode.labels[0], graphNode.identity.low))}
+            variant="outlined"
+            endIcon={isVin(graphNode) ? CheeseIcon() : WineIcon()}>
+                <ShortcutIcon/>
+        </Button>,
+        <Button
+            onClick={() => {
+                addFavorite(graphNode);
+                setFav(true)
+            }}
+            variant="outlined"
+            startIcon={fav ? <CheckIcon /> : <FavoriteIcon />}>
+            Enregistrer
+        </Button>]
     return (
         <Card key={graphNode.identity.low}>
             <CardHeader

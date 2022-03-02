@@ -28,37 +28,51 @@ function fromagePairing(fromageId) {
     OPTIONAL MATCH (v2:${Vin.label})-[:AVEC]->(c)
     WITH collect(f)+collect(v)+collect(v2) as li
     UNWIND li as vs
-    RETURN DISTINCT vs`;    
+    RETURN DISTINCT vs`;
     return connector.execute(req, { id: fromageId })
         .pipe(RxOp.map(vins => {
             return vins._fields;
         }))
 }
 
-function vinPairing(vinId){
+function vinPairing(vinId) {
     const req = `MATCH (v:${Vin.label})
     WHERE id(v) = $id
     OPTIONAL MATCH (v:${Vin.label})-[:AVEC]->(f)
     WITH collect(v)+collect(f) as li
     UNWIND li as vs
-    RETURN DISTINCT vs`;    
+    RETURN DISTINCT vs`;
     return connector.execute(req, { id: vinId })
         .pipe(RxOp.map(fromage => {
             return fromage._fields;
         }))
 }
 
-function relatedFromages(fromageId){
+function relatedFromages(fromageId) {
     const req = `MATCH (f:${Fromage.label})
     WHERE id(f) = $id
     OPTIONAL MATCH (f)-[:CATEGORIE]->(f2:${Fromage.label})
     OPTIONAL MATCH (f)-[:SEMBLABLE]-(f3:${Fromage.label})
     WITH collect(f2)+collect(f3) as li
     UNWIND li as vs
-    RETURN vs`;    
+    RETURN vs`;
     return connector.execute(req, { id: fromageId })
         .pipe(RxOp.map(fromage => {
             return fromage._fields;
+        }))
+}
+
+function relatedVins(vinId) {
+    const req = `MATCH (f:${Vin.label})
+    WHERE id(f) = $id
+    OPTIONAL MATCH (f)-[:CEPAGE]->(f2:${Vin.label})
+    OPTIONAL MATCH (f)-[:APPELATION]-(f3:${Vin.label})
+    WITH collect(f2)+collect(f3) as li
+    UNWIND li as vs
+    RETURN vs`;
+    return connector.execute(req, { id: vinId })
+        .pipe(RxOp.map(vin => {
+            return vin._fields;
         }))
 }
 
@@ -73,3 +87,4 @@ exports.create = create
 exports.fromagePairing = fromagePairing
 exports.vinPairing = vinPairing
 exports.relatedFromages = relatedFromages
+exports.relatedVins = relatedVins
