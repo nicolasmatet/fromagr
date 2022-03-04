@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
-import { CardActions, Link, Skeleton, Stack } from '@mui/material';
+import { CardActions, CardMedia, Link, Skeleton, Stack } from '@mui/material';
 import { Fromage, isFromage, isVin, Vin, VinOuFromage } from '../interfaces/Fromage';
 import { getIcon } from './Icons';
 import { GraphNode } from '../interfaces/GraphNode';
@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import ShortcutIcon from '@mui/icons-material/Shortcut';
 import { getImageUrl } from '../services/api.service';
 import { ProgressiveImg } from './backgrounds/ProgressiveImg';
+import { useNavigate } from 'react-router-dom';
 const fromageService = new FromageService()
 
 function renderString(key: string, values: string[] | string) {
