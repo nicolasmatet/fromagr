@@ -32,7 +32,6 @@ const getDesignTokens = (mode: PaletteMode) => ({
       enteringScreen: 225,
       // recommended when something is leaving screen
       leavingScreen: 195,
-      longest: 1000
     },
     easing: {
       // This is the most common easing curve.

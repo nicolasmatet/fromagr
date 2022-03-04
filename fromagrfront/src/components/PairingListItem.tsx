@@ -22,6 +22,7 @@ import i18n from '../i18n';
 import { useNavigate } from 'react-router-dom';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
 import { getImageUrl } from '../services/api.service';
+import { ProgressiveImg } from './backgrounds/ProgressiveImg';
 const fromageService = new FromageService()
 
 function renderString(prop: any) {
@@ -166,16 +167,17 @@ function getCardHeader(graphNode: VinOuFromage, props: any) {
 }
 export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const { graphNode } = props;
-    const navigate = useNavigate();
     const [fav, setFav] = React.useState(isFavorite(graphNode));
     const [expanded, setExpanded] = React.useState(false);
     const [imageUrl, setImageUrl] = React.useState<string | null>(null);
     React.useEffect(() => {
         getImageUrl(graphNode.properties.wikidata_id).then((imageUrl: string) => {
             console.log('imageUrl', imageUrl);
-            if (imageUrl) {
+            if (imageUrl && imageUrl[0] && imageUrl[0] !== '') {
                 setImageUrl(imageUrl[0])
                 console.log("success")
+            } else {
+                setImageUrl('noImage')
             }
         })
     }, []
@@ -183,24 +185,27 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const favorite = <IconButton onClick={() => { addFavorite(graphNode); setFav(true); }} >
         {fav ? <CheckIcon /> : <FavoriteIcon />}
     </IconButton>
-    // const moreInfo = <IconButton onClick={() => navigate(urlPairing(graphNode.labels[0], graphNode.identity.low))}>
-    //     <ShortcutIcon />
-    // </IconButton>
     const moreInfo = <a href={urlPairing(graphNode.labels[0], graphNode.identity.low)}>
         <ShortcutIcon />
     </a>
-
+    const cardMedia = imageUrl !== 'noImage' ?
+        <div style={{ width: '100%', position: 'relative' }}>
+            <div style={{ paddingBottom: expanded ? '100%' : '66%' }}>
+            </div>
+            <ProgressiveImg
+                style={{ position: 'absolute', top: 0 }}
+                src={imageUrl}
+                alt={imageUrl}
+            />
+        </div>
+        : <></>
     const cardHeader = getCardHeader(graphNode, { expanded, onClick: () => setExpanded(!expanded), fav })
     const cardContent = getCardContent(graphNode)
 
     return (
         <Card key={graphNode.identity.low}>
             {cardHeader}
-            {imageUrl ? <CardMedia
-                component='img'
-                image={imageUrl}
-                alt={imageUrl}
-            /> : <></>}
+            {cardMedia}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 {cardContent}
                 <CardActions sx={{ justifyContent: 'end' }}>

@@ -14,10 +14,13 @@ export function ProgressiveImg(props: any) {
         }),
     })
     React.useEffect(() => {
-        setInnerStyle({
-            ...innerStyle,
-            opacity: 1
-        })
+        if (loaded) {
+            setInnerStyle({
+                ...innerStyle,
+                opacity: 1,
+                objectFit: 'cover'
+            })
+        }
     }, [loaded])
     return (<img
         onLoad={() => setLoaded(true)}
