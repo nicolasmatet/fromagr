@@ -2,7 +2,7 @@ var express = require("express");
 var fromageService = require("../src/services/fromageService.js");
 var utilsService = require("../src/services/utilsService.js");
 var suggestionService = require("../src/services/suggestionService.js");
-
+var wikiService = require("../src/services/wikiService.js");
 var router = express.Router();
 
 function jsonResponse(res, subject) {
@@ -60,6 +60,12 @@ router.get("/suggestion", function (req, res) {
 
 router.get("/randomsuggestion", function (req, res) {
     jsonResponse(res, suggestionService.getRandomSuggestion())
+});
+
+router.get("/imageurl", function (req, res) {
+    const id = req.query.id
+    console.log('id', id);
+    jsonResponse(res, wikiService.getImageUrl(id))
 });
 
 module.exports = router;

@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
-import { CardActions, Link, Skeleton, Stack } from '@mui/material';
+import { CardActions, CardMedia, Link, Skeleton, Stack } from '@mui/material';
 import { Fromage, fromagePropertiesKeys, isFromage, isVin, Vin, VinOuFromage, vinPropertiesKeys } from '../interfaces/Fromage';
 import { CheeseIcon, getIcon, WineIcon } from './Icons';
 import { GraphNode } from '../interfaces/GraphNode';
@@ -22,6 +22,9 @@ import { useTranslation } from "react-i18next";
 import i18n from '../i18n';
 import { useNavigate } from 'react-router-dom';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
+import { ExpandCircleDown } from '@mui/icons-material';
+import { getImageUrl } from '../services/api.service';
+import { ProgressiveImg } from './backgrounds/ProgressiveImg';
 const fromageService = new FromageService()
 
 function renderString(prop: any) {
@@ -129,67 +132,98 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export function PairingListItem(props: { graphNode: VinOuFromage }) {
-    const { graphNode } = props;
-    const navigate = useNavigate();
-    const [expanded, setExpanded] = React.useState(false);
-    const [fav, setFav] = React.useState(isFavorite(graphNode));
+function getCardMedia(imageUrl: string | null) {
+    if (!imageUrl) {
+        return <></>
+    }
+    return <CardMedia
+        component="img"
+        height="194"
+        image={imageUrl}
+        alt={imageUrl}
+    />
+}
 
-    const title = graphNode.properties.name;
+function getCardContent(graphNode: VinOuFromage) {
     const properties =
         isFromage(graphNode) ? <FromagePropertiesRender graphNode={graphNode as Fromage}></FromagePropertiesRender>
             : isVin(graphNode) ? <VinPropertiesRender graphNode={graphNode as Vin}></VinPropertiesRender>
                 : defaultPropertiesRender(Array.from(Object.keys(graphNode.properties)),
                     Array.from(Object.values(graphNode.properties)));
+    return <CardContent>
+        {properties}
+    </CardContent>
+}
+
+function getCardActions(graphNode: VinOuFromage, props: any) {
+    const { fav, setFav } = props;
+    const navigate = useNavigate();
+    const favorite = <IconButton onClick={() => { addFavorite(graphNode); setFav(true); }} >
+        {fav ? <CheckIcon /> : <FavoriteIcon />}
+    </IconButton>
+    const moreInfo = <IconButton onClick={() => navigate(urlPairing(graphNode.labels[0], graphNode.identity.low))}>
+        <ShortcutIcon />
+    </IconButton>
+    return <CardActions sx={{ justifyContent: 'end' }}>
+        {moreInfo}
+        {favorite}
+    </CardActions>
+
+}
+function getCardHeader(graphNode: VinOuFromage, props: any) {
+    const { expanded, onClick, fav } = props;
     const IconComponent = getIcon(graphNode);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-    const actions = [
-        <Button
-            onClick={() => navigate(urlPairing(graphNode.labels[0], graphNode.identity.low))}
-            variant="outlined"
-            endIcon={isVin(graphNode) ? CheeseIcon() : WineIcon()}>
-                <ShortcutIcon/>
-        </Button>,
-        <Button
-            onClick={() => {
-                addFavorite(graphNode);
-                setFav(true)
-            }}
-            variant="outlined"
-            startIcon={fav ? <CheckIcon /> : <FavoriteIcon />}>
-            Enregistrer
-        </Button>]
+    return <CardHeader
+        onClick={onClick}
+        avatar={React.createElement(IconComponent)}
+        action={
+            <>
+                {fav ? <IconButton><FavoriteIcon /></IconButton> : <></>}
+                <ExpandMore
+                    expand={expanded}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            </>
+        }
+        title={graphNode.properties.name}
+    />
+}
+export function PairingListItem(props: { graphNode: VinOuFromage }) {
+    const { graphNode } = props;
+    const [fav, setFav] = React.useState(isFavorite(graphNode));
+    const [expanded, setExpanded] = React.useState(false);
+    const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+    React.useEffect(() => {
+        getImageUrl(graphNode.properties.wikidata_id).then((imageUrl: string) => {
+            console.log('imageUrl', imageUrl);
+            if (imageUrl) {
+                setImageUrl(imageUrl[0])
+                console.log("success")
+            }
+        })
+    }, []
+    )
+    const cardHeader = getCardHeader(graphNode, { expanded, onClick: () => setExpanded(!expanded), fav })
+    const cardContent = getCardContent(graphNode)
+    const cardActions = getCardActions(graphNode, { fav, setFav })
+
     return (
         <Card key={graphNode.identity.low}>
-            <CardHeader
-                onClick={handleExpandClick}
-                avatar={
-                    React.createElement(IconComponent)
-                }
-                action={
-                    <>
-                        {fav ? <IconButton><FavoriteIcon /></IconButton> : <></>}
-                        <ExpandMore
-                            expand={expanded}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <ExpandMoreIcon />
-                        </ExpandMore>
-                    </>
-                }
-                title={title}
-            />
+            {cardHeader}
+            {imageUrl ? <CardMedia
+                    component='img'
+                    image={imageUrl}
+                    alt={imageUrl}
+                /> : <></>}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    {properties}
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'end' }}>
-                    {actions}
-                </CardActions>
+                {cardContent}
+                {cardActions}
             </Collapse>
         </Card>
     )
 }
+
+

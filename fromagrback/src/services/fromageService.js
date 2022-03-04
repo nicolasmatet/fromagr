@@ -12,9 +12,10 @@ function getByName(fromageName) {
         }))
 }
 
-function searchByName(fromageName) {
-    const req = `MATCH (f) WHERE f.${Fromage.name} CONTAINS $name RETURN f`;
-    return connector.execute(req, { name: fromageName })
+function searchByName(searchString) {
+    const searchRegex = (searchString && searchString.lenght > 4) ? searchString + '~0.8' : searchString + "*"
+    const req = `CALL db.index.fulltext.queryNodes("vinOuFromageIndex", $name) YIELD node RETURN node`;
+    return connector.execute(req, { name: searchRegex })
         .pipe(RxOp.map(fromage => {
             return fromage._fields[0];
         }))

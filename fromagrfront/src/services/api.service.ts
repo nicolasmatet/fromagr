@@ -35,10 +35,24 @@ export async function getRelatedVin(vinId: number) {
     return fetch(`${ConfigData.API_URL}/vin/related?id=${vinId}`).then(response => response.json())
 }
 
-export async function getRandomSuggestion(){
+export async function getRandomSuggestion() {
     return fetch(`${ConfigData.API_URL}/randomsuggestion`).then(response => response.json())
 }
 
-export async function getSuggestionOfTheDay(){
+export async function getSuggestionOfTheDay() {
     return fetch(`${ConfigData.API_URL}/suggestion`).then(response => response.json())
+}
+
+export async function getImageUrl(wikidata_id: string) {
+    return fetch(`${ConfigData.API_URL}/imageurl?id=${wikidata_id}`).then(response => {
+        console.log(response);
+        if (!response) {
+            return null
+        }
+        try {
+            return response.json()
+        } catch {
+            return null
+        }
+    })
 }

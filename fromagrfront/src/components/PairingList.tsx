@@ -1,5 +1,6 @@
-import { List, Skeleton } from "@mui/material";
+import { Box, List, Skeleton } from "@mui/material";
 import * as React from "react";
+import { WikiDataDark } from "./backgrounds/WikiData";
 
 
 
@@ -13,9 +14,10 @@ export function PairingList(props: { expecting?: number, children?: any }) {
         content = children
     }
     return (
-        <List sx={{ '& > :not(style)': { m: 2, width:'30ch' } }} component="nav" aria-label="fromages">
-            {children}
-        </List>
-
+        <>
+            <List sx={{ '& > :not(style)': { m: 2, width: '30ch' } }} component="nav" aria-label="fromages">
+                {children}
+            </List>
+        </>
     )
 }

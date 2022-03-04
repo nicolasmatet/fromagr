@@ -1,6 +1,6 @@
 import { GraphNode } from "./GraphNode";
-export interface VinProperties { name: string, couleur: string };
-export interface FromageProperties { name: string, lait: string };
+export interface VinProperties { name: string, couleur: string, wikidata_id:string };
+export interface FromageProperties { name: string, lait: string, wikidata_id:string };
 export type Fromage = GraphNode<FromageProperties>
 export type Vin = GraphNode<VinProperties>
 export type VinOuFromage = Fromage | Vin;
