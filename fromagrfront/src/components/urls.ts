@@ -14,6 +14,10 @@ export function urlSuggestions(random: boolean = false) {
     return random ? '/f/randomsuggestions' : '/f/suggestion'
 }
 
+export function urlAttributions() {
+    return '/f/attributions'
+}
+
 export function urlFavorites() {
     return '/f/favorites'
 }

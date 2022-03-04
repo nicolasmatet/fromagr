@@ -8,8 +8,6 @@ import { TalkingCow } from "./TalkingCow";
 import SearchIcon from '@mui/icons-material/Search';
 import { PairingListItem } from "./PairingListItem";
 import { MainStack } from "./MainStack";
-import { WikiDataDark, WikiDataLight } from "./backgrounds/WikiData";
-const fromageService = new FromageService()
 
 export function PairingPage() {
     const initialPairingList: VinOuFromage[] | null = null;
@@ -17,7 +15,6 @@ export function PairingPage() {
     const [pairingList, setPairingList] = React.useState(initialPairingList);
     const sourceLabel = searchParams.get("nodeLabel")
     const sourceId = searchParams.get("id")
-    const theme = useTheme();
 
     React.useEffect(() => {
         FromageService.awaitPairings(sourceLabel, sourceId, setPairingList);
@@ -28,9 +25,6 @@ export function PairingPage() {
         <MainStack>
             <RenderPairingParent pairingList={pairingList}></RenderPairingParent>
             <RenderPairingList pairingList={pairingList}></RenderPairingList>
-            <Box sx={{ padding: 5 }}>
-                {theme.palette.mode === 'dark' ? <WikiDataDark /> : <WikiDataLight />}
-            </Box>
         </MainStack>
     )
 }

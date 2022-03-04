@@ -1,22 +1,15 @@
 import * as React from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
-import { LandingPage } from './components/Landing';
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
-import { CssBaseline, PaletteMode, Stack, Typography, Link } from '@mui/material';
-import { PairingPage } from './components/PairingPage';
-import { RootPage } from './components/RootPage';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline, PaletteMode, Stack } from '@mui/material';
 import { light } from './components/themes/light';
 import { dark } from './components/themes/dark';
 import { typography } from './components/themes/typography';
-import { urlFavorites, urlPairing, urlSearch, urlSuggestions } from './components/urls';
-import { TopBar } from './components/TopBar';
 import { BottomBar } from './components/BottomBar';
-import { Favorites } from './components/Favorites';
-import { Suggestions } from './components/Suggestions';
 import { wakeup } from './services/api.service';
 import i18n from './i18n';
 import { useTranslation } from "react-i18next";
+import { AppRoutes } from './AppRoutes';
 
 
 
@@ -57,31 +50,10 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 
 function App() {
-  const { t } = useTranslation('translation', {i18n});
+  const { t } = useTranslation('translation', { i18n });
   React.useEffect(() => { wakeup().then(() => console.log("Prêt !")) }, [])
   return (
-    <Routes>
-      <Route path={urlSearch()} element={<>
-        <TopBar />
-        <LandingPage />
-      </>
-      } />
-      <Route path={urlPairing()} element={<>
-        <TopBar goBack={true} />
-        <PairingPage />
-      </>} />
-      <Route path={urlFavorites()} element={<>
-        <TopBar goBack={true} />
-        <Favorites />
-      </>
-      } />
-      <Route path={urlSuggestions()} element={<>
-        <TopBar goBack={true} />
-        <Suggestions />
-      </>
-      } />
-      <Route path="/*" element={<RootPage />} />
-    </Routes>
+    <AppRoutes></AppRoutes>
   );
 }
 

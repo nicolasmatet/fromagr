@@ -1,6 +1,5 @@
-import { Box, List, Skeleton } from "@mui/material";
+import {List, Skeleton } from "@mui/material";
 import * as React from "react";
-import { WikiDataDark } from "./backgrounds/WikiData";
 
 
 
