@@ -7,17 +7,34 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+
             "name": "nom",
-            "lait": "milk",
-            "couleur": "color"
+            "lait": {
+                "vache": "cow milk",
+                "brebis": "sheep milk",
+                "chevre": "goat milk"
+            },
+            "couleur": {
+                "rouge": "red wine",
+                "rosé": "pink wine",
+                "blanc": "white wine"
+            }
 
         }
     },
     fr: {
         translation: {
             "name": "nom",
-            "lait": "lait",
-            "couleur": "couleur"
+            "lait": {
+                "vache": "lait de vache",
+                "brebis": "lait de brebis",
+                "chevre": "lait de chèvre"
+            },
+            "couleur": {
+                "rouge": "vin rouge",
+                "rosé": "vin rosé",
+                "blanc": "vin blanc"
+            }
         }
     }
 };

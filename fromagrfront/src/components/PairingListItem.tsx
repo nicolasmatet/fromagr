@@ -9,8 +9,8 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
-import { CardActions, CardMedia, Link, Skeleton, Stack } from '@mui/material';
-import { Fromage, fromagePropertiesKeys, isFromage, isVin, Vin, VinOuFromage, vinPropertiesKeys } from '../interfaces/Fromage';
+import { CardActions, Link, Skeleton, Stack } from '@mui/material';
+import { Fromage, isFromage, isVin, Vin, VinOuFromage } from '../interfaces/Fromage';
 import { getIcon } from './Icons';
 import { GraphNode } from '../interfaces/GraphNode';
 import { urlPairing } from './urls';
@@ -18,18 +18,17 @@ import { useEffect } from 'react';
 import { FromageService } from '../services/fromage.service';
 import { addFavorite, isFavorite } from '../services/favorites.service';
 import { useTranslation } from "react-i18next";
-import i18n from '../i18n';
-import { useNavigate } from 'react-router-dom';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
 import { getImageUrl } from '../services/api.service';
 import { ProgressiveImg } from './backgrounds/ProgressiveImg';
 const fromageService = new FromageService()
 
-function renderString(prop: any) {
-    if (prop instanceof Array) {
-        return prop.join(', ')
+function renderString(key: string, values: string[] | string) {
+    const { t } = useTranslation()
+    if (values instanceof Array) {
+        return values.map(v => t(key + '.' + v)).join(', ')
     }
-    return prop;
+    return t(key + '.' + values);
 }
 
 function RenderLink(props: { graphNode: GraphNode<any> }) {
@@ -58,16 +57,14 @@ function linkPropertiesRender(linksGroups: [string, GraphNode<any>[]][]) {
     });
 
 }
-function defaultPropertiesRender(propertiesKeys: string[], propertiesValues: any[]) {
-    const { t } = useTranslation();
-    return propertiesValues.map((values, idx) => {
-        return (<Stack spacing={1} key={idx}>
-            <Typography key='title' variant='h5'>{t(propertiesKeys[idx])}</Typography>
-            <Typography key='value' paragraph>
-                {renderString(values)}
+function defaultPropertiesRender(propertiesKeys: string[], graphNode: GraphNode<any>,) {
+    return (<Stack spacing={1}>
+        {propertiesKeys.map((key) => {
+            return <Typography key={key} variant='body1'>
+                {renderString(key, graphNode.properties[key])}
             </Typography>
-        </Stack>)
-    })
+        })}
+    </Stack>)
 }
 
 function VinPropertiesRender(props: { graphNode: Vin }) {
@@ -76,14 +73,14 @@ function VinPropertiesRender(props: { graphNode: Vin }) {
     useEffect(() => {
         fromageService.awaitRelatedVin(graphNode.identity.low, setRelated)
     }, [])
-    console.log("VinPropertiesRender related", related);
-
     const relatedRender = related
         ? linkPropertiesRender([["Cépages ou appellations", related]])
         : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
-    const propertiesValues = vinPropertiesKeys.map((key) => graphNode.properties[key]);
     const content = [
-        defaultPropertiesRender(vinPropertiesKeys, propertiesValues),
+        <Typography key={'lait'} variant='body1'>
+            {React.createElement(getIcon(graphNode))}
+            {renderString('couleur', graphNode.properties.couleur)}
+        </Typography>,
         ...(relatedRender ? [relatedRender] : [])
     ]
     return (
@@ -101,11 +98,11 @@ function FromagePropertiesRender(props: { graphNode: Fromage }) {
     const relatedRender = related
         ? linkPropertiesRender([["Fromages associés", related]])
         : [1, 2, 3].map((i) => <Skeleton key={i}></Skeleton>)
-
-    const propertiesValues = fromagePropertiesKeys.map((key) => graphNode.properties[key]);
-
     const content = [
-        defaultPropertiesRender(fromagePropertiesKeys, propertiesValues),
+        <Typography key={'lait'} variant='body1'>
+            {React.createElement(getIcon(graphNode))}
+            {renderString('lait', graphNode.properties.lait)}
+        </Typography>,
         ...(relatedRender ? [relatedRender] : [])
     ]
     return (
@@ -132,12 +129,37 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 
 function getCardContent(graphNode: VinOuFromage) {
+    const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+    React.useEffect(() => {
+        getImageUrl(graphNode.properties.wikidata_id).then((imageUrl: string) => {
+            console.log('imageUrl', imageUrl);
+            if (imageUrl && imageUrl[0] && imageUrl[0] !== '') {
+                setImageUrl(imageUrl[0])
+                console.log("success")
+            } else {
+                setImageUrl('noImage')
+            }
+        })
+    }, []
+    )
+    const cardMedia = imageUrl !== 'noImage' ?
+        <div style={{ width: '100%', position: 'relative' }}>
+            <div style={{ paddingBottom: '100%' }}>
+            </div>
+            <ProgressiveImg
+                style={{ position: 'absolute', top: 0 }}
+                src={imageUrl}
+                alt={imageUrl}
+            />
+        </div>
+        : <></>
+
     const properties =
         isFromage(graphNode) ? <FromagePropertiesRender graphNode={graphNode as Fromage}></FromagePropertiesRender>
             : isVin(graphNode) ? <VinPropertiesRender graphNode={graphNode as Vin}></VinPropertiesRender>
-                : defaultPropertiesRender(Array.from(Object.keys(graphNode.properties)),
-                    Array.from(Object.values(graphNode.properties)));
+                : defaultPropertiesRender(Array.from(Object.keys(graphNode.properties)), graphNode)
     return <CardContent>
+        {cardMedia}
         {properties}
     </CardContent>
 }
@@ -169,43 +191,19 @@ export function PairingListItem(props: { graphNode: VinOuFromage }) {
     const { graphNode } = props;
     const [fav, setFav] = React.useState(isFavorite(graphNode));
     const [expanded, setExpanded] = React.useState(false);
-    const [imageUrl, setImageUrl] = React.useState<string | null>(null);
-    React.useEffect(() => {
-        getImageUrl(graphNode.properties.wikidata_id).then((imageUrl: string) => {
-            console.log('imageUrl', imageUrl);
-            if (imageUrl && imageUrl[0] && imageUrl[0] !== '') {
-                setImageUrl(imageUrl[0])
-                console.log("success")
-            } else {
-                setImageUrl('noImage')
-            }
-        })
-    }, []
-    )
+
     const favorite = <IconButton onClick={() => { addFavorite(graphNode); setFav(true); }} >
         {fav ? <CheckIcon /> : <FavoriteIcon />}
     </IconButton>
     const moreInfo = <a href={urlPairing(graphNode.labels[0], graphNode.identity.low)}>
         <ShortcutIcon />
     </a>
-    const cardMedia = imageUrl !== 'noImage' ?
-        <div style={{ width: '100%', position: 'relative' }}>
-            <div style={{ paddingBottom: expanded ? '100%' : '66%' }}>
-            </div>
-            <ProgressiveImg
-                style={{ position: 'absolute', top: 0 }}
-                src={imageUrl}
-                alt={imageUrl}
-            />
-        </div>
-        : <></>
     const cardHeader = getCardHeader(graphNode, { expanded, onClick: () => setExpanded(!expanded), fav })
     const cardContent = getCardContent(graphNode)
 
     return (
         <Card key={graphNode.identity.low}>
             {cardHeader}
-            {cardMedia}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 {cardContent}
                 <CardActions sx={{ justifyContent: 'end' }}>
